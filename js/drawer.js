@@ -15,24 +15,25 @@ class Drawer {
         this.canvas = canvas;
     }
 
-    circle(x, y, radius, color, step, width = 1) {
+    circle(x, y, radius, color, duration, width = 1) {
         x *= 2;
         y *= 2;
         radius *= 2;
         let startAngle = 0.5;
-        let curAngle = 0;
         let ctx = this.ctx;
+        let startTime;
         return new Promise((resolve) => {
-            function render() {
-                curAngle += (2 - curAngle) * step;
-                let angle = curAngle + startAngle;
+            function render(t) {
+                startTime = startTime || t;
+                let step = (t - startTime) / duration;
+                let angle = ease(step, 2, startAngle);
                 ctx.beginPath();
                 ctx.arc(x, y, radius, startAngle * PI, angle * PI);
                 ctx.strokeStyle = color;
                 ctx.lineWidth = width;
                 ctx.stroke();
 
-                if (abs(2 - curAngle) > 0.001) {
+                if (step < 1) {
                     requestAnimationFrame(render);
                 } else {
                     resolve();
@@ -42,26 +43,27 @@ class Drawer {
         });
     }
 
-    line(startX, startY, endX, endY, color, step, width = 1) {
+    line(startX, startY, endX, endY, color, duration, width = 1) {
         startX *= 2;
         startY *= 2;
         endX *= 2;
         endY *= 2;
-        let curX = startX;
-        let curY = startY;
         let ctx = this.ctx;
+        let startTime;
         return new Promise((resolve) => {
-            function render() {
-                curX += (endX - curX) * step;
-                curY += (endY - curY) * step;
+            function render(t) {
+                startTime = startTime || t;
+                let step = (t - startTime) / duration;
+                let x = ease(step, endX - startX, startX);
+                let y = ease(step, endY - startY, startY);
                 ctx.beginPath();
                 ctx.moveTo(startX, startY);
-                ctx.lineTo(curX, curY);
+                ctx.lineTo(x, y);
                 ctx.strokeStyle = color;
                 ctx.lineWidth = width;
                 ctx.stroke();
 
-                if (abs(endX - curX) >= 1 || abs(endY - curY) >= 1) {
+                if (step < 1) {
                     requestAnimationFrame(render);
                 } else {
                     resolve();
@@ -74,6 +76,10 @@ class Drawer {
     clear() {
         this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
     }
+}
+
+function ease(step, change, start) {
+    return change * (1 - Math.pow(1 - step, 3)) + start;
 }
 
 module.exports = Drawer;

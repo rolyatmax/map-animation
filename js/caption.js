@@ -7,7 +7,8 @@ class Caption {
         this.drawer = drawer;
         this.text = text;
         this.margin = 30;
-        this.origin = [originX, originY];
+        // this.origin = [originX, originY];
+        this.origin = [100, 100];
 
         this.fade = new WordFade(text, container);
         let styles = window.getComputedStyle(this.fade.textEl);
@@ -27,13 +28,13 @@ class Caption {
     show() {
         return new Promise((resolve) => {
             let {drawer, fade, origin, lineStart, lineEnd, radius, halfLine} = this;
-            drawer.circle(origin[0], origin[1], radius, '#444444', 0.2, 2).then(() => {
-                return drawer.line(lineStart[0], lineStart[1], lineStart[0], lineEnd[1], '#444444', 0.15);
+            drawer.circle(origin[0], origin[1], radius, '#444444', 400, 2).then(() => {
+                return drawer.line(lineStart[0], lineStart[1], lineStart[0], lineEnd[1], '#444444', 400);
             }).then(() => {
-                return drawer.line(lineStart[0], lineEnd[1], lineEnd[0], lineEnd[1], '#444444', 0.15);
+                return drawer.line(lineStart[0], lineEnd[1], lineEnd[0], lineEnd[1], '#444444', 400);
             }).then(() => {
-                drawer.line(lineEnd[0], lineEnd[1], lineEnd[0], lineEnd[1] - halfLine, '#444444', 0.08);
-                drawer.line(lineEnd[0], lineEnd[1], lineEnd[0], lineEnd[1] + halfLine, '#444444', 0.08);
+                drawer.line(lineEnd[0], lineEnd[1], lineEnd[0], lineEnd[1] - halfLine, '#444444', 400);
+                drawer.line(lineEnd[0], lineEnd[1], lineEnd[0], lineEnd[1] + halfLine, '#444444', 400);
                 return fade.showText();
             }).then(resolve);
         });
@@ -42,11 +43,11 @@ class Caption {
     hide() {
         return new Promise((resolve) => {
             let {drawer, fade, origin, lineStart, lineEnd, radius, halfLine} = this;
-            drawer.circle(origin[0], origin[1], radius, '#ffffff', 0.2, 4);
-            drawer.line(lineStart[0], lineStart[1], lineStart[0], lineEnd[1], '#ffffff', 0.15);
-            drawer.line(lineStart[0], lineEnd[1], lineEnd[0], lineEnd[1], '#ffffff', 0.15);
-            drawer.line(lineEnd[0], lineEnd[1], lineEnd[0], lineEnd[1] - halfLine, '#ffffff', 0.08);
-            drawer.line(lineEnd[0], lineEnd[1], lineEnd[0], lineEnd[1] + halfLine, '#ffffff', 0.08);
+            drawer.circle(origin[0], origin[1], radius, '#ffffff', 1200, 4);
+            drawer.line(lineStart[0], lineStart[1], lineStart[0], lineEnd[1], '#ffffff', 1200);
+            drawer.line(lineStart[0], lineEnd[1], lineEnd[0], lineEnd[1], '#ffffff', 1200);
+            drawer.line(lineEnd[0], lineEnd[1], lineEnd[0], lineEnd[1] - halfLine, '#ffffff', 1200);
+            drawer.line(lineEnd[0], lineEnd[1], lineEnd[0], lineEnd[1] + halfLine, '#ffffff', 1200);
             fade.hideText().then(resolve);
         });
     }
