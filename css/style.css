@@ -3,6 +3,12 @@ body {
     -webkit-font-smoothing: antialiased;
 }
 
+canvas {
+    position: absolute;
+    top: 0;
+    left: 0;
+}
+
 .text {
     font-size: 30px;
     font-weight: 100;

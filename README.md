@@ -10,8 +10,8 @@ Then open `index.html` from the file system.
 
 ## TODO
 
- - [ ] Easing methods / Timing (for line drawing)
- - [ ] Order of fade (Words should fade first)
+ - [X] Easing methods / Timing (for line drawing)
+ - [X] Order of fade (Words should fade first)
  - [ ] Drawing a map onto canvas
  - [ ] Visualization starts by showing circles from all over the world, fading in and out
- - [ ] Add start/stop
+ - [X] Add start/stop

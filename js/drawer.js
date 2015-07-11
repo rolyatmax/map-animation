@@ -1,5 +1,8 @@
 const PI = Math.PI;
-let abs = Math.abs;
+
+function ease(step, change, start) {
+    return change * (1 - Math.pow(1 - step, 3)) + start;
+}
 
 class Drawer {
     constructor(container) {
@@ -76,10 +79,6 @@ class Drawer {
     clear() {
         this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
     }
-}
-
-function ease(step, change, start) {
-    return change * (1 - Math.pow(1 - step, 3)) + start;
 }
 
 module.exports = Drawer;

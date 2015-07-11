@@ -1,11 +1,13 @@
-const DURATION = 2800;
 const LETTER_ANIMATION = 2000;
+
+function ease(step, change, start) {
+    return change * Math.pow(step, 2) + start;
+}
 
 class WordFade {
     constructor(text, container) {
         this.letterEls = [];
         this.textEl = this.buildElements(text);
-        this.delay = (DURATION / text.length) | 0;
         container.appendChild(this.textEl);
     }
 
@@ -30,19 +32,24 @@ class WordFade {
         return textEl;
     }
 
-    showText() {
+    showText(duration) {
+        duration -= LETTER_ANIMATION;
+        let letters = this.letterEls.slice();
+        let totalLetters = letters.length;
+        let startTime;
         return new Promise((resolve) => {
-            let letters = this.letterEls.slice();
-            let last = 0;
-            let delay = this.delay;
             function revealLetter(t) {
-                t = t | 0;
-                if (t - last >= delay) {
-                    last = t;
-                    let i = (Math.random() * letters.length) | 0;
-                    let el = letters.splice(i, 1)[0];
-                    el.style.opacity = 1;
-                    el.style.webkitTransform = 'rotate3d(0,0,0,0)';
+                startTime = startTime || t;
+                let step = Math.min(1, (t - startTime) / duration);
+                let lettersShouldBeLeft = totalLetters - (ease(step, totalLetters, 0) | 0);
+                let lettersToAnimate = letters.length - lettersShouldBeLeft;
+                if (lettersToAnimate) {
+                    while (lettersToAnimate--) {
+                        let i = (Math.random() * letters.length) | 0;
+                        let el = letters.splice(i, 1)[0];
+                        el.style.opacity = 1;
+                        el.style.webkitTransform = 'rotate3d(0,0,0,0)';
+                    }
                 }
                 if (letters.length) {
                     requestAnimationFrame(revealLetter);
@@ -54,19 +61,25 @@ class WordFade {
         });
     }
 
-    hideText() {
+    hideText(duration) {
+        duration -= LETTER_ANIMATION;
+        let {letterEls, textEl} = this;
+        let letters = letterEls.slice();
+        let totalLetters = letters.length;
+        let startTime;
         return new Promise((resolve) => {
-            let letters = this.letterEls.slice();
-            let last = 0;
-            let {delay, textEl} = this;
             function hideLetter(t) {
-                t = t | 0;
-                if (t - last >= delay) {
-                    last = t;
-                    let i = (Math.random() * letters.length) | 0;
-                    let el = letters.splice(i, 1)[0];
-                    el.style.webkitTransform = `rotate3d(104, 69, 32, 93deg)`;
-                    el.style.opacity = 0;
+                startTime = startTime || t;
+                let step = Math.min(1, (t - startTime) / duration);
+                let lettersShouldBeLeft = totalLetters - (ease(step, totalLetters, 0) | 0);
+                let lettersToAnimate = letters.length - lettersShouldBeLeft;
+                if (lettersToAnimate) {
+                    while (lettersToAnimate--) {
+                        let i = (Math.random() * letters.length) | 0;
+                        let el = letters.splice(i, 1)[0];
+                        el.style.webkitTransform = `rotate3d(104, 69, 32, 93deg)`;
+                        el.style.opacity = 0;
+                    }
                 }
                 if (letters.length) {
                     requestAnimationFrame(hideLetter);
