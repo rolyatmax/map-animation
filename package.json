@@ -1,0 +1,29 @@
+{
+  "name": "word-viz-test",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "watch-js": "mkdir -p build && node_modules/.bin/watchify --full-paths js/main.js -o build/build.js -v"
+  },
+  "author": "Taylor Baldwin",
+  "license": "ISC",
+  "devDependencies": {
+    "babel-eslint": "3.1.23",
+    "babelify": "6.1.2",
+    "browserify": "10.2.6",
+    "eslint": "0.24.1",
+    "watchify": "3.2.3"
+  },
+  "browserify": {
+    "transform": [
+      [
+        "babelify"
+      ]
+    ]
+  },
+  "dependencies": {
+    "jquery": "^2.1.4"
+  }
+}

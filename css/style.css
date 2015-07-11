@@ -1,0 +1,21 @@
+body {
+    font-family: 'Lato', sans-serif;
+    -webkit-font-smoothing: antialiased;
+}
+
+.text {
+    font-size: 30px;
+    font-weight: 100;
+    color: #444;
+    width: 250px;
+    position: absolute;
+}
+
+.word {
+    margin: 0 5px;
+    display: inline-block;
+}
+
+.text span {
+    display: inline-block;
+}
