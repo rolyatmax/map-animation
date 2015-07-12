@@ -18,3 +18,4 @@ Then open `index.html` from the file system.
  - [ ] Fix drawing so it doesn't duplicate lines and make colors darker (or clear after every frame?)
  - [ ] Clean up styling in JS/CSS
  - [ ] Refactor textBg box
+ - [ ] Fix map width:height ratio
