@@ -2,13 +2,14 @@ let WordFade = require('./word_fade');
 
 
 class Caption {
-    constructor(text, originX, originY, drawer, container) {
+    constructor(text, origin, drawer, container, color) {
         this.container = container;
         this.drawer = drawer;
         this.text = text;
         this.margin = 30;
-        this.origin = [originX, originY];
-        // this.origin = [100, 100];
+        this.origin = origin;
+        this.color = color;
+        let [originX, originY] = origin;
 
         this.fade = new WordFade(text, container);
         let styles = window.getComputedStyle(this.fade.textEl);
@@ -41,17 +42,17 @@ class Caption {
 
     show() {
         return new Promise((resolve) => {
-            let {drawer, fade, origin, lineStart, lineEnd, radius, halfLine, textBg} = this;
-            drawer.circle(origin[0], origin[1], radius, '#444444', 400, 2).then(() => {
-                return drawer.line(lineStart[0], lineStart[1], lineStart[0], lineEnd[1], '#444444', 400);
+            let {drawer, fade, origin, lineStart, lineEnd, radius, halfLine, textBg, color} = this;
+            drawer.circle(origin[0], origin[1], radius, color, 400, 2).then(() => {
+                return drawer.line(lineStart[0], lineStart[1], lineStart[0], lineEnd[1], color, 400);
             }).then(() => {
                 fade.showText(4000).then(resolve);
                 textBg.style.opacity = 0.85;
                 textBg.style.webkitTransform = 'scale(1,1)';
-                return drawer.line(lineStart[0], lineEnd[1], lineEnd[0], lineEnd[1], '#444444', 400);
+                return drawer.line(lineStart[0], lineEnd[1], lineEnd[0], lineEnd[1], color, 400);
             }).then(() => {
-                drawer.line(lineEnd[0], lineEnd[1], lineEnd[0], lineEnd[1] - halfLine, '#444444', 400);
-                drawer.line(lineEnd[0], lineEnd[1], lineEnd[0], lineEnd[1] + halfLine, '#444444', 400);
+                drawer.line(lineEnd[0], lineEnd[1], lineEnd[0], lineEnd[1] - halfLine, color, 400);
+                drawer.line(lineEnd[0], lineEnd[1], lineEnd[0], lineEnd[1] + halfLine, color, 400);
             });
         });
     }
@@ -59,15 +60,16 @@ class Caption {
     hide() {
         return new Promise((resolve) => {
             let {drawer, fade, origin, lineStart, lineEnd, radius, halfLine, textBg} = this;
+            let color = '#ffffff';
             fade.hideText(4500).then(resolve);
             textBg.style.opacity = 0;
             textBg.style.webkitTransform = 'scale(0.6,0.6)';
             setTimeout(() => {
-                drawer.circle(origin[0], origin[1], radius, '#ffffff', 1200, 4);
-                drawer.line(lineStart[0], lineStart[1], lineStart[0], lineEnd[1], '#ffffff', 1200);
-                drawer.line(lineStart[0], lineEnd[1], lineEnd[0], lineEnd[1], '#ffffff', 1200);
-                drawer.line(lineEnd[0], lineEnd[1], lineEnd[0], lineEnd[1] - halfLine, '#ffffff', 1200);
-                drawer.line(lineEnd[0], lineEnd[1], lineEnd[0], lineEnd[1] + halfLine, '#ffffff', 1200);
+                drawer.circle(origin[0], origin[1], radius, color, 1200, 4);
+                drawer.line(lineStart[0], lineStart[1], lineStart[0], lineEnd[1], color, 1200);
+                drawer.line(lineStart[0], lineEnd[1], lineEnd[0], lineEnd[1], color, 1200);
+                drawer.line(lineEnd[0], lineEnd[1], lineEnd[0], lineEnd[1] - halfLine, color, 1200);
+                drawer.line(lineEnd[0], lineEnd[1], lineEnd[0], lineEnd[1] + halfLine, color, 1200);
             }, 1900);
         });
     }
