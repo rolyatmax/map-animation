@@ -19,3 +19,9 @@ Then open `index.html` from the file system.
  - [ ] Clean up styling in JS/CSS
  - [ ] Refactor textBg box
  - [ ] Fix map width:height ratio
+ - [ ] Link up lines to draw a couple long lines instead of thousands?
+ - [ ] draw with GPU? (poor performance on ARM - raspberry pi??)
+ - [ ] pan / zoom map to specific country / region?
+ - [ ] position captions by quadrant
+ - [ ] create other scenes (haikus, etc)
+ - [ ] draw individual countries
