@@ -7,8 +7,8 @@ class Caption {
         this.drawer = drawer;
         this.text = text;
         this.margin = 30;
-        // this.origin = [originX, originY];
-        this.origin = [100, 100];
+        this.origin = [originX, originY];
+        // this.origin = [100, 100];
 
         this.fade = new WordFade(text, container);
         let styles = window.getComputedStyle(this.fade.textEl);
@@ -18,6 +18,20 @@ class Caption {
         let left = (Math.random() * (window.innerWidth - width - originX - this.margin) + originX) | 0;
         this.fade.textEl.style.top = `${top}px`;
         this.fade.textEl.style.left = `${left}px`;
+        this.fade.textEl.style.zIndex = 10;
+
+        this.textBg = document.createElement('div');
+        this.textBg.style.top = `${top - this.margin}px`;
+        this.textBg.style.left = `${left - this.margin + 2}px`;
+        this.textBg.style.width = `${width + this.margin * 2}px`;
+        this.textBg.style.height = `${height + this.margin * 2}px`;
+        this.textBg.style.backgroundColor = '#ffffff';
+        this.textBg.style.position = 'absolute';
+        this.textBg.style.webkitTransform = 'scale(0.6, 0.6)';
+        this.textBg.style.webkitTransition = 'all 5000ms ease';
+        this.textBg.style.opacity = 0;
+        this.textBg.style.zIndex = 2;
+        this.container.appendChild(this.textBg);
 
         this.radius = 20;
         this.lineStart = [this.origin[0], this.origin[1] + this.radius];
@@ -27,11 +41,13 @@ class Caption {
 
     show() {
         return new Promise((resolve) => {
-            let {drawer, fade, origin, lineStart, lineEnd, radius, halfLine} = this;
+            let {drawer, fade, origin, lineStart, lineEnd, radius, halfLine, textBg} = this;
             drawer.circle(origin[0], origin[1], radius, '#444444', 400, 2).then(() => {
                 return drawer.line(lineStart[0], lineStart[1], lineStart[0], lineEnd[1], '#444444', 400);
             }).then(() => {
                 fade.showText(4000).then(resolve);
+                textBg.style.opacity = 0.85;
+                textBg.style.webkitTransform = 'scale(1,1)';
                 return drawer.line(lineStart[0], lineEnd[1], lineEnd[0], lineEnd[1], '#444444', 400);
             }).then(() => {
                 drawer.line(lineEnd[0], lineEnd[1], lineEnd[0], lineEnd[1] - halfLine, '#444444', 400);
@@ -42,8 +58,10 @@ class Caption {
 
     hide() {
         return new Promise((resolve) => {
-            let {drawer, fade, origin, lineStart, lineEnd, radius, halfLine} = this;
+            let {drawer, fade, origin, lineStart, lineEnd, radius, halfLine, textBg} = this;
             fade.hideText(4500).then(resolve);
+            textBg.style.opacity = 0;
+            textBg.style.webkitTransform = 'scale(0.6,0.6)';
             setTimeout(() => {
                 drawer.circle(origin[0], origin[1], radius, '#ffffff', 1200, 4);
                 drawer.line(lineStart[0], lineStart[1], lineStart[0], lineEnd[1], '#ffffff', 1200);

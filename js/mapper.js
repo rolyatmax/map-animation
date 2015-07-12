@@ -1,56 +1,74 @@
 let map = require('./world.json');
 
+const FADE_SPEED = 3000;
+
 function ease(step, change, start) {
-    return change * (1 - Math.pow(1 - step, 3)) + start;
+    return change * Math.pow(step, 2) + start;
 }
 
+
 class Mapper {
-    constructor(container) {
-        let winHeight = window.innerHeight;
-        let winWidth = window.innerWidth;
-        let canvas = document.createElement('canvas');
-        canvas.style.height = `${winHeight}px`;
-        canvas.style.width = `${winWidth}px`;
-        canvas.height = winHeight * 2;
-        canvas.width = winWidth * 2;
-        container.appendChild(canvas);
-        this.ctx = canvas.getContext('2d');
-        this.canvas = canvas;
+    constructor(drawer) {
+        drawer.canvas.style.opacity = 0;
+        drawer.canvas.style.webkitTransition = `all ${FADE_SPEED}ms linear`;
+        this.drawer = drawer;
         this.json = map;
-        this.ranges = this.getRange(map);
-        this.draw();
+        this.arcs = this.convertArcsToAbsolute(map.arcs);
+        this.ranges = this.getRange(this.arcs);
     }
 
-    draw() {
-        let polygons = map.arcs;
-        let {ctx} = this;
-        let started = false;
-        polygons.forEach(polygon => {
-            ctx.beginPath();
-            ctx.strokeStyle = '#444444';
-            ctx.lineWidth = 1;
-            let last;
-            polygon.forEach(pt => {
-                let [x, y] = pt;
-                if (!started) {
-                    ctx.moveTo(...this.mapPointToCanvas([x, y]));
-                    last = [x, y];
-                    started = true;
-                } else {
-                    x += last[0];
-                    y += last[1];
-                    ctx.lineTo(...this.mapPointToCanvas([x, y]));
-                    last = [x, y];
+    draw(duration, drawSpeed, color, width = 1) {
+        let arcs = this.arcs.slice();
+        let totalArcs = arcs.length;
+        let startTime;
+        let {drawer} = this;
+        let transform = this.mapPointToCanvas.bind(this);
+        return new Promise(resolve => {
+            function drawSection(t) {
+                startTime = startTime || t;
+                let step = Math.min(1, (t - startTime) / duration);
+                let arcsShouldBeLeft = totalArcs - (ease(step, totalArcs, 0) | 0);
+                let arcsToDraw = arcs.length - arcsShouldBeLeft;
+                if (arcsToDraw) {
+                    while (arcsToDraw--) {
+                        let i = (Math.random() * arcs.length) | 0;
+                        let arc = arcs.splice(i, 1)[0];
+                        drawer.arc(arc, drawSpeed, transform, color, width);
+                    }
                 }
-            });
-            ctx.stroke();
-            started = false;
-            last = null;
+                if (arcs.length) {
+                    requestAnimationFrame(drawSection.bind(this));
+                } else {
+                    setTimeout(resolve, drawSpeed);
+                }
+            }
+            requestAnimationFrame(drawSection.bind(this));
         });
     }
 
+    drawRelativeArc(arc) {
+        let {ctx} = this.drawer;
+        ctx.beginPath();
+        ctx.strokeStyle = '#444444';
+        ctx.lineWidth = 1;
+        let last;
+        arc.forEach(pt => {
+            let [x, y] = pt;
+            if (!last) {
+                ctx.moveTo(...this.mapPointToCanvas([x, y]));
+            } else {
+                x += last[0];
+                y += last[1];
+                ctx.lineTo(...this.mapPointToCanvas([x, y]));
+            }
+            last = [x, y];
+        });
+        ctx.stroke();
+        last = null;
+    }
+
     mapPointToCanvas(pt) {
-        let {height, width} = this.canvas;
+        let {height, width} = this.drawer.canvas;
         let {x: xRange, y: yRange} = this.ranges;
 
         let xDiff = xRange[1] - xRange[0];
@@ -62,28 +80,31 @@ class Mapper {
 
         return [
             (x / xDiff) * width,
-            (y / yDiff) * height
+            height - (y / yDiff) * height
         ];
     }
 
-    getRange(mapJSON) {
-        let polygons = mapJSON.arcs;
+    getRange(arcs) {
         let max = [-Infinity, -Infinity];
         let min = [Infinity, Infinity];
-        polygons.forEach(polygon => {
-            let pt = polygon[0];
-            if (pt[0] > max[0]) {
-                max[0] = pt[0];
-            }
-            if (pt[1] > max[1]) {
-                max[1] = pt[1];
-            }
-            if (pt[0] < min[0]) {
-                min[0] = pt[0];
-            }
-            if (pt[1] < min[1]) {
-                min[1] = pt[1];
-            }
+        arcs.forEach(arc => {
+            arc.forEach(pt => {
+                let [x, y] = pt;
+                let [maxX, maxY] = max;
+                let [minX, minY] = min;
+                if (x > maxX) {
+                    max[0] = x;
+                }
+                if (y > maxY) {
+                    max[1] = y;
+                }
+                if (x < minX) {
+                    min[0] = x;
+                }
+                if (y < minY) {
+                    min[1] = y;
+                }
+            });
         });
         return {
             x: [min[0], max[0]],
@@ -91,8 +112,31 @@ class Mapper {
         };
     }
 
+    convertArcsToAbsolute(arcs) {
+        return arcs.map(arc => {
+            let last;
+            return arc.map(pt => {
+                let absolutePt;
+                if (!last) {
+                    absolutePt = pt;
+                } else {
+                    let [lastX, lastY] = last;
+                    let [x, y] = pt;
+                    absolutePt = [lastX + x, lastY + y];
+                }
+                last = absolutePt;
+                return absolutePt;
+            });
+        });
+    }
+
+    hide() {
+        requestAnimationFrame(() => this.drawer.canvas.style.opacity = 0);
+        this.draw(2000, 500, '#ffffff', 3).then(this.clear.bind(this));
+    }
+
     clear() {
-        this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
+        this.drawer.clear();
     }
 }
 
