@@ -132,7 +132,7 @@ class Mapper {
 
     hide() {
         requestAnimationFrame(() => this.drawer.canvas.style.opacity = 0);
-        this.draw(2000, 500, '#ffffff', 3).then(this.clear.bind(this));
+        this.draw(1000, 1500, '#ffffff', 3).then(this.clear.bind(this));
     }
 
     clear() {
