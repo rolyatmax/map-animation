@@ -6,7 +6,15 @@ npm install
 npm run watch-js
 ```
 
-Then open `index.html` from the file system.
+Then:
+
+```
+npm run serve
+```
+
+And point your browser to `localhost:8282`.
+
+----------------------------
 
 ## TODO
 
@@ -15,13 +23,13 @@ Then open `index.html` from the file system.
  - [X] Drawing a map onto canvas
  - [X] Add start/stop
  - [ ] Fix drawing so it doesn't duplicate lines and make colors darker (or clear after every frame?)
- - [ ] Clean up styling in JS/CSS
+ - [X] Clean up styling in JS/CSS
  - [ ] Refactor textBg box
  - [X] Fix map width:height ratio
  - [ ] Link up lines to draw a couple long lines instead of thousands?
  - [ ] draw with GPU? (poor performance on ARM - raspberry pi??)
  - [ ] pan / zoom map to specific country / region?
- - [ ] position captions by quadrant
+ - [X] position captions by quadrant
  - [X] draw individual countries (draw one country at a time?)
 
 ### Scene options

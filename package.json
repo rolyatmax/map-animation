@@ -6,7 +6,8 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "watch-js": "mkdir -p build && node_modules/.bin/watchify --full-paths js/main.js -o build/build.js -v",
-    "build": "mkdir -p build && node_modules/.bin/browserify js/main.js -o build/build.js"
+    "build": "mkdir -p build && node_modules/.bin/browserify js/main.js -o build/build.js",
+    "serve": "python -m SimpleHTTPServer 8282"
   },
   "author": "Taylor Baldwin",
   "license": "ISC",
