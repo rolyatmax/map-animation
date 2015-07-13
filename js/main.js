@@ -42,7 +42,7 @@ document.addEventListener('keydown', (e) => {
 let mapDrawer = new Drawer(container);
 let mapper = new Mapper(mapDrawer);
 requestAnimationFrame(() => mapper.drawer.canvas.style.opacity = 0.5);
-mapper.draw(2000, 2000, COLOR)
+mapper.draw(20000, 2000, COLOR)
     .then(showCaptions.bind(null, NUM_QUOTES_TO_SHOW))
     .then(mapper.hide.bind(mapper));
 

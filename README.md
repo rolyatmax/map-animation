@@ -24,4 +24,4 @@ Then open `index.html` from the file system.
  - [ ] pan / zoom map to specific country / region?
  - [ ] position captions by quadrant
  - [ ] create other scenes (haikus, etc)
- - [ ] draw individual countries
+ - [ ] draw individual countries (draw one country at a time?)
