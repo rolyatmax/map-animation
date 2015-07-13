@@ -1,4 +1,5 @@
 const PI = Math.PI;
+const ASPECT_RATIO = 3 / 7;
 
 function ease(step, change, start) {
     return change * (1 - Math.pow(1 - step, 3)) + start;
@@ -12,13 +13,14 @@ function dist([x1, y1], [x2, y2]) {
 
 class Drawer {
     constructor(container) {
-        let winHeight = window.innerHeight;
-        let winWidth = window.innerWidth;
+        let height = window.innerHeight;
+        let width = window.innerWidth;
+        height = width * ASPECT_RATIO;
         let canvas = document.createElement('canvas');
-        canvas.style.height = `${winHeight}px`;
-        canvas.style.width = `${winWidth}px`;
-        canvas.height = winHeight * 2;
-        canvas.width = winWidth * 2;
+        canvas.style.height = `${height}px`;
+        canvas.style.width = `${width}px`;
+        canvas.height = height * 2;
+        canvas.width = width * 2;
         container.appendChild(canvas);
         this.ctx = canvas.getContext('2d');
         this.canvas = canvas;

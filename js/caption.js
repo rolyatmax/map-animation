@@ -15,8 +15,8 @@ class Caption {
         let styles = window.getComputedStyle(this.fade.textEl);
         let height = parseInt(styles.height, 10);
         let width = parseInt(styles.width, 10);
-        let top = (Math.random() * (window.innerHeight - height - originY - this.margin) + originY) | 0;
-        let left = (Math.random() * (window.innerWidth - width - originX - this.margin) + originX) | 0;
+        let top = (Math.random() * (drawer.canvas.height / 2 - height - originY - this.margin) + originY) | 0;
+        let left = (Math.random() * (drawer.canvas.width / 2 - width - originX - this.margin) + originX) | 0;
         this.fade.textEl.style.top = `${top}px`;
         this.fade.textEl.style.left = `${left}px`;
         this.fade.textEl.style.zIndex = 10;
