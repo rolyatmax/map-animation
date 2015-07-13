@@ -6,7 +6,8 @@ class Caption {
         this.container = container;
         this.drawer = drawer;
         this.text = text;
-        this.margin = 30;
+        this.margin = 100;
+        this.padding = 30;
         this.origin = origin;
         this.color = color;
         this.radius = 20;
@@ -29,30 +30,30 @@ class Caption {
         let {height: canvasHeight, width: canvasWidth} = this.drawer.canvas.getBoundingClientRect();
 
         // this is probably better called padding (and should be managed by the css)
-        textElHeight += this.margin * 2;
-        textElWidth += this.margin * 2;
+        textElHeight += this.padding * 2;
+        textElWidth += this.padding * 2;
 
         let {
             inTopHalf: originInTopHalf,
             inLeftHalf: originInLeftHalf
         } = this.getQuadrant(origin, canvasHeight, canvasWidth);
 
-        let top = originInTopHalf ? canvasHeight - textElHeight : this.margin * 2; // padding + margin
-        let left = originInLeftHalf ? canvasWidth - textElWidth : this.margin * 2; // padding + margin
+        let top = originInTopHalf ? canvasHeight - textElHeight - this.margin : this.margin; // padding + margin
+        let left = originInLeftHalf ? canvasWidth - textElWidth - this.margin : this.margin; // padding + margin
 
-        this.fade.textEl.style.left = `${left}px`;
-        this.fade.textEl.style.top = `${top}px`;
+        this.fade.textEl.style.left = `${left + this.padding}px`;
+        this.fade.textEl.style.top = `${top + this.padding}px`;
         this.fade.textEl.style.textAlign = originInLeftHalf ? 'left' : 'right';
 
         this.textBg.style.height = `${textElHeight}px`;
         this.textBg.style.width = `${textElWidth}px`;
-        this.textBg.style.left = `${left - this.margin}px`;
-        this.textBg.style.top = `${top - this.margin}px`;
+        this.textBg.style.left = `${left}px`;
+        this.textBg.style.top = `${top}px`;
 
         // these should be set based on quadrant
-        let lineLeftEnd = originInLeftHalf ? left - this.margin - 2 : left + textElWidth - this.margin + 2;
-        this.lineEnd = [lineLeftEnd, top - this.margin + textElHeight / 2];
+        let lineLeftEnd = originInLeftHalf ? left - 2 : left + textElWidth + 2;
         this.halfLine = textElHeight / 2;
+        this.lineEnd = [lineLeftEnd, top + this.halfLine];
         this.startAngle = originInTopHalf ? 0.5 : 1.5;
         let lineStartOffset = originInTopHalf ? this.radius : -this.radius;
         this.lineStart = [origin[0], origin[1] + lineStartOffset];
