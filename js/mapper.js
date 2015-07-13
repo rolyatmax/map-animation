@@ -1,6 +1,6 @@
 let map = require('./world.json');
 
-const FADE_SPEED = 3000;
+const FADE_SPEED = 9000;
 
 function ease(step, change, start) {
     return change * Math.pow(step, 2) + start;
@@ -9,12 +9,22 @@ function ease(step, change, start) {
 
 class Mapper {
     constructor(drawer) {
-        drawer.canvas.style.opacity = 0;
-        drawer.canvas.style.webkitTransition = `all ${FADE_SPEED}ms linear`;
+        drawer.canvas.style.opacity = 0.3;
+        drawer.canvas.style.webkitTransform = 'rotate3d(9,9,0,75deg) scale(4, 4)';
+        drawer.canvas.style.webkitTransition = `all ${FADE_SPEED}ms ease`;
         this.drawer = drawer;
         this.json = map;
         this.arcs = this.convertArcsToAbsolute(map.arcs);
+        this.countries = this.buildCountryShapes(map);
         this.ranges = this.getRange(this.arcs);
+    }
+
+    show(duration, drawSpeed, color) {
+        requestAnimationFrame(() => {
+            this.drawer.canvas.style.opacity = 0.5;
+            this.drawer.canvas.style.webkitTransform = 'rotate3d(0,0,0,0) scale(1, 1)';
+        });
+        return this.drawCountries(duration, drawSpeed, color);
     }
 
     draw(duration, drawSpeed, color, width = 1) {
@@ -37,6 +47,36 @@ class Mapper {
                     }
                 }
                 if (arcs.length) {
+                    requestAnimationFrame(drawSection.bind(this));
+                } else {
+                    setTimeout(resolve, drawSpeed);
+                }
+            }
+            requestAnimationFrame(drawSection.bind(this));
+        });
+    }
+
+    // same as draw but draws individual countries
+    drawCountries(duration, drawSpeed, color, width = 1) {
+        let countryCodes = Object.keys(this.countries);
+        let totalCountries = countryCodes.length;
+        let startTime;
+        let {drawer, countries} = this;
+        let transform = this.mapPointToCanvas.bind(this);
+        return new Promise(resolve => {
+            function drawSection(t) {
+                startTime = startTime || t;
+                let step = Math.min(1, (t - startTime) / duration);
+                let countriesShouldBeLeft = totalCountries - (ease(step, totalCountries, 0) | 0);
+                let countriesToDraw = countryCodes.length - countriesShouldBeLeft;
+                if (countriesToDraw) {
+                    while (countriesToDraw--) {
+                        let i = (Math.random() * countryCodes.length) | 0;
+                        let code = countryCodes.splice(i, 1)[0];
+                        countries[code].forEach(arc => drawer.arc(arc, drawSpeed, transform, color, width));
+                    }
+                }
+                if (countryCodes.length) {
                     requestAnimationFrame(drawSection.bind(this));
                 } else {
                     setTimeout(resolve, drawSpeed);
@@ -130,9 +170,36 @@ class Mapper {
         });
     }
 
+    buildCountryShapes(topoJSON) {
+        let countries = {};
+        let arcs = this.arcs;
+        topoJSON.objects.countries.geometries.forEach(country => {
+            let shapes = country.arcs.map(shape => {
+                // if its a MultiPolygon, expect arrays inside arrays
+                if (Array.isArray(shape[0])) {
+                    shape = shape[0];
+                }
+                return shape.reduce((countryArc, arcIndex) => {
+                    let arc;
+                    if (arcIndex >= 0) {
+                        arc = arcs[arcIndex].slice();
+                    } else {
+                        arc = arcs[~arcIndex].slice().reverse();
+                    }
+                    if (!countryArc.length) {
+                        countryArc[0] = arc[0];
+                    }
+                    return countryArc.concat(arc.slice(1));
+                }, []);
+            });
+            countries[country.properties.id] = shapes;
+        });
+        return countries;
+    }
+
     hide() {
         requestAnimationFrame(() => this.drawer.canvas.style.opacity = 0);
-        this.draw(1000, 1500, '#ffffff', 3).then(this.clear.bind(this));
+        return this.draw(2000, 1500, '#ffffff', 3).then(this.clear.bind(this));
     }
 
     clear() {
