@@ -25,3 +25,10 @@ canvas {
 .text span {
     display: inline-block;
 }
+
+.text-bg {
+    background-color: #ffffff;
+    position: absolute;
+    -webkit-transition: all 5000ms ease;
+    z-index: 2;
+}

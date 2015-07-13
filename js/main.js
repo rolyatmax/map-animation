@@ -4,8 +4,8 @@ let Mapper = require('./mapper');
 let quotes = require('./quotes');
 
 const DISPLAY_TIME = 11000;
-const CAPTION_TIME = 3000;
-const NUM_QUOTES_TO_SHOW = 2;
+const CAPTION_TIME = 1000;
+const NUM_QUOTES_TO_SHOW = 5;
 const COLOR = '#444444';
 
 
@@ -30,8 +30,14 @@ function showScene() {
         return new Promise(resolve => {
             resolve = res || resolve;
             drawer.clear();
-            let x = (Math.random() * 300 + 100) | 0;
-            let y = (Math.random() * 300 + 100) | 0;
+
+            let {
+                height: canvasHeight,
+                width: canvasWidth
+            } = drawer.canvas.getBoundingClientRect();
+
+            let x = (Math.random() * canvasWidth) | 0;
+            let y = (Math.random() * canvasHeight) | 0;
             let i = (Math.random() * quoteSelection.length) | 0;
             let quote = quoteSelection.splice(i, 1)[0];
             let caption = new Caption(quote, [x, y], drawer, container, COLOR);

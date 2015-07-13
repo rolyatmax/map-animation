@@ -26,11 +26,11 @@ class Drawer {
         this.canvas = canvas;
     }
 
-    circle(x, y, radius, color, duration, width = 1) {
+    circle(center, radius, startAngle, color, duration, width = 1) {
+        let [x, y] = center;
         x *= 2;
         y *= 2;
         radius *= 2;
-        let startAngle = 0.5;
         let ctx = this.ctx;
         let startTime;
         return new Promise((resolve) => {
@@ -54,7 +54,9 @@ class Drawer {
         });
     }
 
-    line(startX, startY, endX, endY, color, duration, width = 1) {
+    line(start, end, color, duration, width = 1) {
+        let [startX, startY] = start;
+        let [endX, endY] = end;
         startX *= 2;
         startY *= 2;
         endX *= 2;

@@ -9,67 +9,92 @@ class Caption {
         this.margin = 30;
         this.origin = origin;
         this.color = color;
-        let [originX, originY] = origin;
+        this.radius = 20;
 
         this.fade = new WordFade(text, container);
-        let styles = window.getComputedStyle(this.fade.textEl);
-        let height = parseInt(styles.height, 10);
-        let width = parseInt(styles.width, 10);
-        let top = (Math.random() * (drawer.canvas.height / 2 - height - originY - this.margin) + originY) | 0;
-        let left = (Math.random() * (drawer.canvas.width / 2 - width - originX - this.margin) + originX) | 0;
-        this.fade.textEl.style.top = `${top}px`;
-        this.fade.textEl.style.left = `${left}px`;
         this.fade.textEl.style.zIndex = 10;
 
         this.textBg = document.createElement('div');
-        this.textBg.style.top = `${top - this.margin}px`;
-        this.textBg.style.left = `${left - this.margin + 2}px`;
-        this.textBg.style.width = `${width + this.margin * 2}px`;
-        this.textBg.style.height = `${height + this.margin * 2}px`;
-        this.textBg.style.backgroundColor = '#ffffff';
-        this.textBg.style.position = 'absolute';
-        this.textBg.style.webkitTransform = 'scale(0.6, 0.6)';
-        this.textBg.style.webkitTransition = 'all 5000ms ease';
+        this.textBg.classList.add('text-bg');
         this.textBg.style.opacity = 0;
-        this.textBg.style.zIndex = 2;
+        this.textBg.style.webkitTransform = 'scale(0.6, 0.6)';
         this.container.appendChild(this.textBg);
 
-        this.radius = 20;
-        this.lineStart = [this.origin[0], this.origin[1] + this.radius];
-        this.lineEnd = [left - this.margin, top + height / 2];
-        this.halfLine = this.margin + height / 2;
+        this.setPositions(origin);
+    }
+
+    // position the box based on the origin (in the opposite quadrant)
+    setPositions(origin) {
+        let {height: textElHeight, width: textElWidth} = this.fade.textEl.getBoundingClientRect();
+        let {height: canvasHeight, width: canvasWidth} = this.drawer.canvas.getBoundingClientRect();
+
+        // this is probably better called padding (and should be managed by the css)
+        textElHeight += this.margin * 2;
+        textElWidth += this.margin * 2;
+
+        let {
+            inTopHalf: originInTopHalf,
+            inLeftHalf: originInLeftHalf
+        } = this.getQuadrant(origin, canvasHeight, canvasWidth);
+
+        let top = originInTopHalf ? canvasHeight - textElHeight : this.margin * 2; // padding + margin
+        let left = originInLeftHalf ? canvasWidth - textElWidth : this.margin * 2; // padding + margin
+
+        this.fade.textEl.style.left = `${left}px`;
+        this.fade.textEl.style.top = `${top}px`;
+        this.fade.textEl.style.textAlign = originInLeftHalf ? 'left' : 'right';
+
+        this.textBg.style.height = `${textElHeight}px`;
+        this.textBg.style.width = `${textElWidth}px`;
+        this.textBg.style.left = `${left - this.margin}px`;
+        this.textBg.style.top = `${top - this.margin}px`;
+
+        // these should be set based on quadrant
+        let lineLeftEnd = originInLeftHalf ? left - this.margin - 2 : left + textElWidth - this.margin + 2;
+        this.lineEnd = [lineLeftEnd, top - this.margin + textElHeight / 2];
+        this.halfLine = textElHeight / 2;
+        this.startAngle = originInTopHalf ? 0.5 : 1.5;
+        let lineStartOffset = originInTopHalf ? this.radius : -this.radius;
+        this.lineStart = [origin[0], origin[1] + lineStartOffset];
+    }
+
+    getQuadrant([x, y], height, width) {
+        return {
+            'inTopHalf': y <= height / 2,
+            'inLeftHalf': x <= width / 2
+        };
     }
 
     show() {
+        let {drawer, fade, origin, lineStart, lineEnd, radius, halfLine, textBg, color} = this;
         return new Promise((resolve) => {
-            let {drawer, fade, origin, lineStart, lineEnd, radius, halfLine, textBg, color} = this;
-            drawer.circle(origin[0], origin[1], radius, color, 400, 2).then(() => {
-                return drawer.line(lineStart[0], lineStart[1], lineStart[0], lineEnd[1], color, 400);
+            drawer.circle(origin, radius, this.startAngle, color, 400, 2).then(() => {
+                return drawer.line(lineStart, [lineStart[0], lineEnd[1]], color, 400);
             }).then(() => {
                 fade.showText(4000).then(resolve);
                 textBg.style.opacity = 0.85;
                 textBg.style.webkitTransform = 'scale(1,1)';
-                return drawer.line(lineStart[0], lineEnd[1], lineEnd[0], lineEnd[1], color, 400);
+                return drawer.line([lineStart[0], lineEnd[1]], lineEnd, color, 400);
             }).then(() => {
-                drawer.line(lineEnd[0], lineEnd[1], lineEnd[0], lineEnd[1] - halfLine, color, 400);
-                drawer.line(lineEnd[0], lineEnd[1], lineEnd[0], lineEnd[1] + halfLine, color, 400);
+                drawer.line(lineEnd, [lineEnd[0], lineEnd[1] - halfLine], color, 400);
+                drawer.line(lineEnd, [lineEnd[0], lineEnd[1] + halfLine], color, 400);
             });
         });
     }
 
     hide() {
+        let {drawer, fade, origin, lineStart, lineEnd, radius, halfLine, textBg} = this;
+        let color = '#ffffff';
         return new Promise((resolve) => {
-            let {drawer, fade, origin, lineStart, lineEnd, radius, halfLine, textBg} = this;
-            let color = '#ffffff';
             fade.hideText(4500).then(resolve);
             textBg.style.opacity = 0;
             textBg.style.webkitTransform = 'scale(0.6,0.6)';
             setTimeout(() => {
-                drawer.circle(origin[0], origin[1], radius, color, 1200, 4);
-                drawer.line(lineStart[0], lineStart[1], lineStart[0], lineEnd[1], color, 1200);
-                drawer.line(lineStart[0], lineEnd[1], lineEnd[0], lineEnd[1], color, 1200);
-                drawer.line(lineEnd[0], lineEnd[1], lineEnd[0], lineEnd[1] - halfLine, color, 1200);
-                drawer.line(lineEnd[0], lineEnd[1], lineEnd[0], lineEnd[1] + halfLine, color, 1200);
+                drawer.circle(origin, radius, this.startAngle, color, 1200, 4);
+                drawer.line(lineStart, [lineStart[0], lineEnd[1]], color, 1200);
+                drawer.line([lineStart[0], lineEnd[1]], lineEnd, color, 1200);
+                drawer.line(lineEnd, [lineEnd[0], lineEnd[1] - halfLine], color, 1200);
+                drawer.line(lineEnd, [lineEnd[0], lineEnd[1] + halfLine], color, 1200);
             }, 1900);
         });
     }
