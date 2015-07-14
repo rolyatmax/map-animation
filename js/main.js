@@ -1,7 +1,9 @@
 let Mapper = require('./mapper');
-let map = require('./world.json');
+let map = require('./world-10m.json');
 let CaptionScene = require('./caption_scene');
 let CountryScene = require('./country_scene');
+
+window.map = map;
 
 let worldMap = new Mapper(map);
 

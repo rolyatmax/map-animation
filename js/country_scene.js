@@ -4,7 +4,7 @@ let MapDrawer = require('./map_drawer');
 
 const DISPLAY_TIME = 5000;
 const COLOR = '#444444';
-const NUM_COUNTRIES_TO_SHOW = 5;
+const NUM_COUNTRIES_TO_SHOW = 1;
 
 class CountryScene {
     constructor(container, worldMap) {
@@ -44,8 +44,8 @@ class CountryScene {
             this.fade.textEl.style.zIndex = 10;
             this.fade.textEl.style.left = '100px';
             this.fade.textEl.style.top = '100px';
-            this.fade.showText(4000).then(() => {
-                setTimeout(this.fade.hideText.bind(this.fade, 4000), DISPLAY_TIME);
+            this.fade.showText(6000).then(() => {
+                setTimeout(this.fade.hideText.bind(this.fade, 4000), 4000);
             });
 
             count--;
