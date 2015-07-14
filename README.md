@@ -18,7 +18,7 @@ And point your browser to `localhost:8282`.
 
 ## TODO
 
- - [ ] Position origin over country
+ - [X] Position origin over country
  - [X] Easing methods / Timing (for line drawing)
  - [X] Order of fade (Words should fade first)
  - [X] Drawing a map onto canvas

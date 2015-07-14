@@ -1,7 +1,9 @@
 let Caption = require('./caption');
 let Drawer = require('./drawer');
+let MapDrawer = require('./map_drawer');
 let Mapper = require('./mapper');
 let quotes = require('./quotes');
+let map = require('./world.json');
 
 const DISPLAY_TIME = 11000;
 const CAPTION_TIME = 1000;
@@ -9,6 +11,7 @@ const NUM_QUOTES_TO_SHOW = 5;
 const COLOR = '#444444';
 
 
+let worldMap = new Mapper(map);
 let container = document.querySelector('.container');
 let timeout = 0;
 
@@ -25,23 +28,17 @@ document.addEventListener('keydown', (e) => {
 function showScene() {
     let drawer = new Drawer(container);
     let quoteSelection = quotes.slice();
-    let mapDrawer = new Drawer(container);
-    let mapper = new Mapper(mapDrawer);
+    let mapper = new MapDrawer(new Drawer(container), worldMap);
 
     function showCaptions(count, res) {
         return new Promise(resolve => {
             resolve = res || resolve;
             drawer.clear();
 
-            let {
-                height: canvasHeight,
-                width: canvasWidth
-            } = drawer.canvas.getBoundingClientRect();
-
-            let countryCodes = Object.keys(mapper.countries);
+            let countryCodes = Object.keys(worldMap.countries);
             let i = (Math.random() * countryCodes.length) | 0;
             let code = countryCodes.splice(i, 1)[0];
-            let {center} = mapper.getCountryBoundingRect(code);
+            let {center} = worldMap.getCountryBoundingRect(code);
             center = mapper.mapPointToCanvas(center).map(x => x / 2); // divide by two because canvas pixels are doubled
 
             let j = (Math.random() * quoteSelection.length) | 0;
