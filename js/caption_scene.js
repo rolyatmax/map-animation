@@ -5,7 +5,7 @@ let quotes = require('./quotes');
 
 const DISPLAY_TIME = 11000;
 const CAPTION_TIME = 1000;
-const NUM_QUOTES_TO_SHOW = 5;
+const NUM_QUOTES_TO_SHOW = 3;
 const COLOR = '#444444';
 
 
@@ -16,15 +16,15 @@ class CaptionScene {
 
         this.drawer = new Drawer(container);
         this.quoteSelection = quotes.slice();
-        this.mapper = new MapDrawer(new Drawer(container), worldMap);
+        this.mapDrawer = new MapDrawer(new Drawer(container), worldMap, 9000);
         this.worldMap = worldMap;
 
-        window.mapper = this.mapper;
+        window.mapDrawer = this.mapDrawer;
         window.drawer = this.drawer;
     }
 
     start() {
-        return this.mapper.show(9000, 3000, COLOR)
+        return this.mapDrawer.showCountries(9000, 3000, COLOR)
             .then(this.showCaptions.bind(this, NUM_QUOTES_TO_SHOW))
             .then(this.teardown.bind(this));
     }
@@ -39,7 +39,7 @@ class CaptionScene {
             let code = countryCodes.splice(i, 1)[0];
             let {center} = this.worldMap.getCountryBoundingRect(code);
             // divide by two because canvas pixels are doubled
-            center = this.mapper.mapPointToCanvas(center).map(x => x / 2);
+            center = this.mapDrawer.mapPointToCanvas(center).map(x => x / 2);
 
             let j = (Math.random() * this.quoteSelection.length) | 0;
             let quote = this.quoteSelection.splice(j, 1)[0];
@@ -52,7 +52,7 @@ class CaptionScene {
     }
 
     teardown() {
-        return this.mapper.hide();
+        return this.mapDrawer.hide();
     }
 
     pause() {

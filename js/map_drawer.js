@@ -1,5 +1,3 @@
-const FADE_SPEED = 9000;
-
 function ease(step, change, start) {
     return change * Math.pow(step, 2) + start;
 }
@@ -8,19 +6,28 @@ function ease(step, change, start) {
 class MapDrawer {
     // expects `map` to be on object with ranges, arcs, (and optionally) a
     // countries key
-    constructor(drawer, map) {
+    constructor(drawer, map, fadeSpeed) {
         drawer.canvas.style.opacity = 0.3;
         drawer.canvas.style.webkitTransform = 'rotate3d(9,9,0,75deg) scale(4, 4)';
-        drawer.canvas.style.webkitTransition = `all ${FADE_SPEED}ms ease`;
+        drawer.canvas.style.webkitTransition = `all ${fadeSpeed}ms ease`;
         this.drawer = drawer;
         this.map = map;
     }
 
-    show(duration, drawSpeed, color) {
+    animateIn() {
         requestAnimationFrame(() => {
             this.drawer.canvas.style.opacity = 0.5;
             this.drawer.canvas.style.webkitTransform = 'rotate3d(0,0,0,0) scale(1, 1)';
         });
+    }
+
+    show(duration, drawSpeed, color) {
+        this.animateIn();
+        return this.draw(duration, drawSpeed, color);
+    }
+
+    showCountries(duration, drawSpeed, color) {
+        this.animateIn();
         return this.drawCountries(duration, drawSpeed, color);
     }
 
