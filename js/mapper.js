@@ -152,6 +152,19 @@ class Mapper {
         };
     }
 
+    getCountryBoundingRect(country) {
+        let {x: [minX, maxX], y: [minY, maxY]} = this.getRange(this.countries[country]);
+        let width = maxX - minX;
+        let height = maxY - minY;
+        return {
+            top: minY,
+            left: minX,
+            height: height,
+            width: width,
+            center: [minX + width / 2, minY + height / 2]
+        };
+    }
+
     convertArcsToAbsolute(arcs) {
         return arcs.map(arc => {
             let last;

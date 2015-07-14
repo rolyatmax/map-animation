@@ -25,6 +25,8 @@ document.addEventListener('keydown', (e) => {
 function showScene() {
     let drawer = new Drawer(container);
     let quoteSelection = quotes.slice();
+    let mapDrawer = new Drawer(container);
+    let mapper = new Mapper(mapDrawer);
 
     function showCaptions(count, res) {
         return new Promise(resolve => {
@@ -36,11 +38,15 @@ function showScene() {
                 width: canvasWidth
             } = drawer.canvas.getBoundingClientRect();
 
-            let x = (Math.random() * canvasWidth) | 0;
-            let y = (Math.random() * canvasHeight) | 0;
-            let i = (Math.random() * quoteSelection.length) | 0;
-            let quote = quoteSelection.splice(i, 1)[0];
-            let caption = new Caption(quote, [x, y], drawer, container, COLOR);
+            let countryCodes = Object.keys(mapper.countries);
+            let i = (Math.random() * countryCodes.length) | 0;
+            let code = countryCodes.splice(i, 1)[0];
+            let {center} = mapper.getCountryBoundingRect(code);
+            center = mapper.mapPointToCanvas(center).map(x => x / 2); // divide by two because canvas pixels are doubled
+
+            let j = (Math.random() * quoteSelection.length) | 0;
+            let quote = quoteSelection.splice(j, 1)[0];
+            let caption = new Caption(quote, center, drawer, container, COLOR);
             caption.show().then(() => setTimeout(caption.hide.bind(caption), CAPTION_TIME));
             count--;
             let next = count ? showCaptions.bind(null, count, resolve) : resolve;
@@ -48,8 +54,6 @@ function showScene() {
         });
     }
 
-    let mapDrawer = new Drawer(container);
-    let mapper = new Mapper(mapDrawer);
     mapper.show(9000, 3000, COLOR)
         .then(showCaptions.bind(null, NUM_QUOTES_TO_SHOW))
         .then(mapper.hide.bind(mapper))
