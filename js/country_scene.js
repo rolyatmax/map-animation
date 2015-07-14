@@ -1,9 +1,10 @@
+let WordFade = require('./word_fade');
 let Drawer = require('./drawer');
 let MapDrawer = require('./map_drawer');
 
 const DISPLAY_TIME = 5000;
 const COLOR = '#444444';
-const NUM_COUNTRIES_TO_SHOW = 1;
+const NUM_COUNTRIES_TO_SHOW = 5;
 
 class CountryScene {
     constructor(container, worldMap) {
@@ -27,8 +28,7 @@ class CountryScene {
 
             let countryCodes = Object.keys(this.worldMap.countries);
             let i = (Math.random() * countryCodes.length) | 0;
-            // let code = countryCodes.splice(i, 1)[0];
-            let code = 'USA';
+            let code = countryCodes.splice(i, 1)[0];
             let arcs = this.worldMap.countries[code];
 
             let map = {
@@ -38,6 +38,15 @@ class CountryScene {
 
             this.drawer = new Drawer(this.container);
             this.mapDrawer = new MapDrawer(this.drawer, map, 8000);
+
+            this.fade = new WordFade(code, this.container);
+            this.fade.textEl.style.fontSize = '28px';
+            this.fade.textEl.style.zIndex = 10;
+            this.fade.textEl.style.left = '100px';
+            this.fade.textEl.style.top = '100px';
+            this.fade.showText(4000).then(() => {
+                setTimeout(this.fade.hideText.bind(this.fade, 4000), DISPLAY_TIME);
+            });
 
             count--;
             let next = count ? this.showCountries.bind(this, count, resolve) : resolve;

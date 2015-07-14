@@ -1,5 +1,4 @@
 const PI = Math.PI;
-const ASPECT_RATIO = 3 / 7;
 
 function ease(step, change, start) {
     return change * (1 - Math.pow(1 - step, 3)) + start;
@@ -15,7 +14,6 @@ class Drawer {
     constructor(container) {
         let height = window.innerHeight;
         let width = window.innerWidth;
-        height = width * ASPECT_RATIO;
         let canvas = document.createElement('canvas');
         canvas.style.height = `${height}px`;
         canvas.style.width = `${width}px`;

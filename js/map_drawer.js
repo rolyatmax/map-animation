@@ -114,18 +114,19 @@ class MapDrawer {
 
     mapPointToCanvas(pt) {
         let {height, width} = this.drawer.canvas;
-        let {x: xRange, y: yRange} = this.map.ranges;
+        let {x: [minX, maxX], y: [minY, maxY]} = this.map.ranges;
 
-        let xDiff = xRange[1] - xRange[0];
-        let yDiff = yRange[1] - yRange[0];
+        let xDiff = maxX - minX;
+        let yDiff = maxY - minY;
         let [x, y] = pt;
 
-        x -= xRange[0];
-        y -= yRange[0];
+        let xScale = width / xDiff;
+        let yScale = height / yDiff;
+        let scale = xScale < yScale ? xScale : yScale;
 
         return [
-            (x / xDiff) * width,
-            height - (y / yDiff) * height
+            (x - minX) * scale,
+            (maxY - y) * scale
         ];
     }
 

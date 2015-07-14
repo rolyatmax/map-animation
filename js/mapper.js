@@ -1,7 +1,7 @@
 class Mapper {
     constructor(map) {
         this.json = map;
-        this.arcs = this.convertArcsToAbsolute(map.arcs);
+        this.arcs = this.convertArcsToAbsolute(map.arcs, map.transform);
         this.countries = this.buildCountryShapes(map);
         this.ranges = this.getRange(this.arcs);
     }
@@ -47,7 +47,7 @@ class Mapper {
         };
     }
 
-    convertArcsToAbsolute(arcs) {
+    convertArcsToAbsolute(arcs, {translate, scale}) {
         return arcs.map(arc => {
             let last;
             return arc.map(pt => {
@@ -60,7 +60,7 @@ class Mapper {
                     absolutePt = [lastX + x, lastY + y];
                 }
                 last = absolutePt;
-                return absolutePt;
+                return absolutePt.map((coord, i) => coord * scale[i] + translate[i]);
             });
         });
     }
