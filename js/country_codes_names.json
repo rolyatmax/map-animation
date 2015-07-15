@@ -4,10 +4,6 @@
     "code": "af"
   },
   {
-    "name": "\u00c5land Islands",
-    "code": "ax"
-  },
-  {
     "name": "Albania",
     "code": "al"
   },
@@ -28,10 +24,6 @@
     "code": "ao"
   },
   {
-    "name": "Anguilla",
-    "code": "ai"
-  },
-  {
     "name": "Antarctica",
     "code": "aq"
   },
@@ -46,10 +38,6 @@
   {
     "name": "Armenia",
     "code": "am"
-  },
-  {
-    "name": "Aruba",
-    "code": "aw"
   },
   {
     "name": "Australia",
@@ -96,10 +84,6 @@
     "code": "bj"
   },
   {
-    "name": "Bermuda",
-    "code": "bm"
-  },
-  {
     "name": "Bhutan",
     "code": "bt"
   },
@@ -118,10 +102,6 @@
   {
     "name": "Botswana",
     "code": "bw"
-  },
-  {
-    "name": "Bouvet Island",
-    "code": "bv"
   },
   {
     "name": "Brazil",
@@ -164,10 +144,6 @@
     "code": "cv"
   },
   {
-    "name": "Cayman Islands",
-    "code": "ky"
-  },
-  {
     "name": "Central African Republic",
     "code": "cf"
   },
@@ -182,14 +158,6 @@
   {
     "name": "China",
     "code": "cn"
-  },
-  {
-    "name": "Christmas Island",
-    "code": "cx"
-  },
-  {
-    "name": "Cocos (Keeling) Islands",
-    "code": "cc"
   },
   {
     "name": "Colombia",
@@ -226,10 +194,6 @@
   {
     "name": "Cuba",
     "code": "cu"
-  },
-  {
-    "name": "Cura\u00e7ao",
-    "code": "cw"
   },
   {
     "name": "Cyprus",
@@ -284,10 +248,6 @@
     "code": "et"
   },
   {
-    "name": "Falkland Islands (Malvinas)",
-    "code": "fk"
-  },
-  {
     "name": "Faroe Islands",
     "code": "fo"
   },
@@ -302,10 +262,6 @@
   {
     "name": "France",
     "code": "fr"
-  },
-  {
-    "name": "French Guiana",
-    "code": "gf"
   },
   {
     "name": "French Polynesia",
@@ -336,10 +292,6 @@
     "code": "gh"
   },
   {
-    "name": "Gibraltar",
-    "code": "gi"
-  },
-  {
     "name": "Greece",
     "code": "gr"
   },
@@ -352,20 +304,12 @@
     "code": "gd"
   },
   {
-    "name": "Guadeloupe",
-    "code": "gp"
-  },
-  {
     "name": "Guam",
     "code": "gu"
   },
   {
     "name": "Guatemala",
     "code": "gt"
-  },
-  {
-    "name": "Guernsey",
-    "code": "gg"
   },
   {
     "name": "Guinea",
@@ -384,20 +328,12 @@
     "code": "ht"
   },
   {
-    "name": "Heard Island and McDonald Islands",
-    "code": "hm"
-  },
-  {
     "name": "Holy See",
     "code": "va"
   },
   {
     "name": "Honduras",
     "code": "hn"
-  },
-  {
-    "name": "Hong Kong",
-    "code": "hk"
   },
   {
     "name": "Hungary",
@@ -734,10 +670,6 @@
   {
     "name": "Rwanda",
     "code": "rw"
-  },
-  {
-    "name": "Saint Barth\u00e9lemy",
-    "code": "bl"
   },
   {
     "name": "Saint Helena, Ascension and Tristan da Cunha",

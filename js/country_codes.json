@@ -1,23 +1,11 @@
 [
     {
-        "cca2": "AW",
-        "cca3": "ABW"
-    },
-    {
         "cca2": "AF",
         "cca3": "AFG"
     },
     {
         "cca2": "AO",
         "cca3": "AGO"
-    },
-    {
-        "cca2": "AI",
-        "cca3": "AIA"
-    },
-    {
-        "cca2": "AX",
-        "cca3": "ALA"
     },
     {
         "cca2": "AL",
@@ -104,20 +92,12 @@
         "cca3": "BIH"
     },
     {
-        "cca2": "BL",
-        "cca3": "BLM"
-    },
-    {
         "cca2": "BY",
         "cca3": "BLR"
     },
     {
         "cca2": "BZ",
         "cca3": "BLZ"
-    },
-    {
-        "cca2": "BM",
-        "cca3": "BMU"
     },
     {
         "cca2": "BO",
@@ -140,10 +120,6 @@
         "cca3": "BTN"
     },
     {
-        "cca2": "BV",
-        "cca3": "BVT"
-    },
-    {
         "cca2": "BW",
         "cca3": "BWA"
     },
@@ -154,10 +130,6 @@
     {
         "cca2": "CA",
         "cca3": "CAN"
-    },
-    {
-        "cca2": "CC",
-        "cca3": "CCK"
     },
     {
         "cca2": "CH",
@@ -210,18 +182,6 @@
     {
         "cca2": "CU",
         "cca3": "CUB"
-    },
-    {
-        "cca2": "CW",
-        "cca3": "CUW"
-    },
-    {
-        "cca2": "CX",
-        "cca3": "CXR"
-    },
-    {
-        "cca2": "KY",
-        "cca3": "CYM"
     },
     {
         "cca2": "CY",
@@ -292,10 +252,6 @@
         "cca3": "FJI"
     },
     {
-        "cca2": "FK",
-        "cca3": "FLK"
-    },
-    {
         "cca2": "FR",
         "cca3": "FRA"
     },
@@ -320,24 +276,12 @@
         "cca3": "GEO"
     },
     {
-        "cca2": "GG",
-        "cca3": "GGY"
-    },
-    {
         "cca2": "GH",
         "cca3": "GHA"
     },
     {
-        "cca2": "GI",
-        "cca3": "GIB"
-    },
-    {
         "cca2": "GN",
         "cca3": "GIN"
-    },
-    {
-        "cca2": "GP",
-        "cca3": "GLP"
     },
     {
         "cca2": "GM",
@@ -368,24 +312,12 @@
         "cca3": "GTM"
     },
     {
-        "cca2": "GF",
-        "cca3": "GUF"
-    },
-    {
         "cca2": "GU",
         "cca3": "GUM"
     },
     {
         "cca2": "GY",
         "cca3": "GUY"
-    },
-    {
-        "cca2": "HK",
-        "cca3": "HKG"
-    },
-    {
-        "cca2": "HM",
-        "cca3": "HMD"
     },
     {
         "cca2": "HN",
@@ -408,16 +340,8 @@
         "cca3": "IDN"
     },
     {
-        "cca2": "IM",
-        "cca3": "IMN"
-    },
-    {
         "cca2": "IN",
         "cca3": "IND"
-    },
-    {
-        "cca2": "IO",
-        "cca3": "IOT"
     },
     {
         "cca2": "IE",
@@ -448,10 +372,6 @@
         "cca3": "JAM"
     },
     {
-        "cca2": "JE",
-        "cca3": "JEY"
-    },
-    {
         "cca2": "JO",
         "cca3": "JOR"
     },
@@ -476,20 +396,12 @@
         "cca3": "KHM"
     },
     {
-        "cca2": "KI",
-        "cca3": "KIR"
-    },
-    {
         "cca2": "KN",
         "cca3": "KNA"
     },
     {
         "cca2": "KR",
         "cca3": "KOR"
-    },
-    {
-        "cca2": "XK",
-        "cca3": "KOS"
     },
     {
         "cca2": "KW",
@@ -538,14 +450,6 @@
     {
         "cca2": "LV",
         "cca3": "LVA"
-    },
-    {
-        "cca2": "MO",
-        "cca3": "MAC"
-    },
-    {
-        "cca2": "MF",
-        "cca3": "MAF"
     },
     {
         "cca2": "MA",
@@ -612,14 +516,6 @@
         "cca3": "MRT"
     },
     {
-        "cca2": "MS",
-        "cca3": "MSR"
-    },
-    {
-        "cca2": "MQ",
-        "cca3": "MTQ"
-    },
-    {
         "cca2": "MU",
         "cca3": "MUS"
     },
@@ -630,10 +526,6 @@
     {
         "cca2": "MY",
         "cca3": "MYS"
-    },
-    {
-        "cca2": "YT",
-        "cca3": "MYT"
     },
     {
         "cca2": "NA",
@@ -648,20 +540,12 @@
         "cca3": "NER"
     },
     {
-        "cca2": "NF",
-        "cca3": "NFK"
-    },
-    {
         "cca2": "NG",
         "cca3": "NGA"
     },
     {
         "cca2": "NI",
         "cca3": "NIC"
-    },
-    {
-        "cca2": "NU",
-        "cca3": "NIU"
     },
     {
         "cca2": "NL",
@@ -694,10 +578,6 @@
     {
         "cca2": "PA",
         "cca3": "PAN"
-    },
-    {
-        "cca2": "PN",
-        "cca3": "PCN"
     },
     {
         "cca2": "PE",
@@ -736,20 +616,8 @@
         "cca3": "PRY"
     },
     {
-        "cca2": "PS",
-        "cca3": "PSE"
-    },
-    {
-        "cca2": "PF",
-        "cca3": "PYF"
-    },
-    {
         "cca2": "QA",
         "cca3": "QAT"
-    },
-    {
-        "cca2": "RE",
-        "cca3": "REU"
     },
     {
         "cca2": "RO",
@@ -780,14 +648,6 @@
         "cca3": "SGP"
     },
     {
-        "cca2": "GS",
-        "cca3": "SGS"
-    },
-    {
-        "cca2": "SJ",
-        "cca3": "SJM"
-    },
-    {
         "cca2": "SB",
         "cca3": "SLB"
     },
@@ -806,10 +666,6 @@
     {
         "cca2": "SO",
         "cca3": "SOM"
-    },
-    {
-        "cca2": "PM",
-        "cca3": "SPM"
     },
     {
         "cca2": "RS",
@@ -856,10 +712,6 @@
         "cca3": "SYR"
     },
     {
-        "cca2": "TC",
-        "cca3": "TCA"
-    },
-    {
         "cca2": "TD",
         "cca3": "TCD"
     },
@@ -874,10 +726,6 @@
     {
         "cca2": "TJ",
         "cca3": "TJK"
-    },
-    {
-        "cca2": "TK",
-        "cca3": "TKL"
     },
     {
         "cca2": "TM",
@@ -904,10 +752,6 @@
         "cca3": "TUR"
     },
     {
-        "cca2": "TV",
-        "cca3": "TUV"
-    },
-    {
         "cca2": "TW",
         "cca3": "TWN"
     },
@@ -922,10 +766,6 @@
     {
         "cca2": "UA",
         "cca3": "UKR"
-    },
-    {
-        "cca2": "UM",
-        "cca3": "UMI"
     },
     {
         "cca2": "UY",
@@ -950,10 +790,6 @@
     {
         "cca2": "VE",
         "cca3": "VEN"
-    },
-    {
-        "cca2": "VG",
-        "cca3": "VGB"
     },
     {
         "cca2": "VI",
