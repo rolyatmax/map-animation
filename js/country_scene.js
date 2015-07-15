@@ -7,7 +7,7 @@ let countries = require('./country_codes_names.json');
 
 const DISPLAY_TIME = 5000;
 const COLOR = '#444444';
-const NUM_COUNTRIES_TO_SHOW = 5;
+const NUM_COUNTRIES_TO_SHOW = 2;
 
 let map;
 

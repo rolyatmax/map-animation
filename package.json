@@ -27,5 +27,8 @@
         "babelify"
       ]
     ]
+  },
+  "dependencies": {
+    "promise-polyfill": "^2.1.0"
   }
 }
