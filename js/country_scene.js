@@ -3,7 +3,6 @@ let WordFade = require('./word_fade');
 let Drawer = require('./drawer');
 let MapDrawer = require('./map_drawer');
 let Mapper = require('./mapper');
-let countries = require('./country_codes_names.json');
 
 const DISPLAY_TIME = 5000;
 const COLOR = '#444444';
@@ -12,7 +11,8 @@ const NUM_COUNTRIES_TO_SHOW = 2;
 let map;
 
 class CountryScene {
-    constructor(container) {
+    constructor(container, data) {
+        this.data = data.slice();
         this.container = container;
         this.timeout = 0;
 
@@ -30,9 +30,8 @@ class CountryScene {
         return new Promise(resolve => {
             resolve = res || resolve;
 
-            let i = Math.random() * countries.length | 0;
-            let name = countries[i].name;
-            let code = countries[i].code;
+            let i = Math.random() * this.data.length | 0;
+            let {name, code} = this.data.splice(i, 1)[0];
 
             getJSON(`data/${code}-all.topo.json`).then(json => {
                 map = new Mapper(json);

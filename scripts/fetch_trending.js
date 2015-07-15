@@ -63,6 +63,7 @@ function fetchBuzzes(regions) {
     var promises = regions.map(function(region) {
         var url = getUrl(buzzesEndpoint.replace('%s', region['country_code'].toUpperCase()));
         return getJSON(url).then(function(buzzRes) {
+            // TODO: only include those regions that actually have buzzes returned
             return {
                 code: region['country_code'],
                 name: region['name'],

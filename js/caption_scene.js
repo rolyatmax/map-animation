@@ -1,3 +1,4 @@
+let {getThreeLetterCountryCode} = require('./utils');
 let Caption = require('./caption');
 let Drawer = require('./drawer');
 let MapDrawer = require('./map_drawer');
@@ -14,7 +15,8 @@ const COLOR = '#444444';
 
 
 class CaptionScene {
-    constructor(container) {
+    constructor(container, data) {
+        this.data = data.slice();
         this.container = container;
         this.timeout = 0;
 
@@ -37,15 +39,16 @@ class CaptionScene {
             resolve = res || resolve;
             this.drawer.clear();
 
-            let countryCodes = Object.keys(worldMap.countries);
-            let i = (Math.random() * countryCodes.length) | 0;
-            let code = countryCodes.splice(i, 1)[0];
+            let i = Math.random() * this.data.length | 0;
+            let region = this.data.splice(i, 1)[0];
+            let code = getThreeLetterCountryCode(region.code);
             let {center} = worldMap.getCountryBoundingRect(code);
             // divide by two because canvas pixels are doubled
             center = this.mapDrawer.mapPointToCanvas(center).map(x => x / 2);
 
-            let j = (Math.random() * this.quoteSelection.length) | 0;
-            let quote = this.quoteSelection.splice(j, 1)[0];
+            let j = (Math.random() * region.buzzes.length) | 0;
+            let quote = region.buzzes[j].title;
+
             let caption = new Caption(quote, center, this.drawer, this.container, COLOR);
             caption.show().then(() => setTimeout(caption.hide.bind(caption), CAPTION_TIME));
             count--;

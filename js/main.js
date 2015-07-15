@@ -1,4 +1,4 @@
-let Mapper = require('./mapper');
+let {getJSON} = require('./utils');
 let CaptionScene = require('./caption_scene');
 let CountryScene = require('./country_scene');
 
@@ -12,17 +12,22 @@ document.addEventListener('keydown', (e) => {
     curScene.pause();
 });
 
-let scenes = [CountryScene, CaptionScene];
+let scenes = [CaptionScene, CountryScene];
 let i = 0;
 
-function showScene() {
-    let Scene = scenes[i % scenes.length];
-    curScene = new Scene(container);
-    curScene.start().then(() => {
-        container.innerHTML = '';
+function main() {
+    getJSON('data/geofresh.json').then(data => {
+        function showScene() {
+            let Scene = scenes[i % scenes.length];
+            curScene = new Scene(container, data.result);
+            curScene.start().then(() => {
+                container.innerHTML = '';
+                requestAnimationFrame(showScene);
+            });
+            i++;
+        }
         requestAnimationFrame(showScene);
     });
-    i++;
 }
 
-requestAnimationFrame(showScene);
+main();

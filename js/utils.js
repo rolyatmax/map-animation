@@ -1,9 +1,20 @@
+let countryCodes = require('./country_codes.json');
+
 let onReady = (fn) => {
     if (document.readyState !== 'loading') {
         fn();
     } else {
         document.addEventListener('DOMContentLoaded', fn);
     }
+};
+
+let getThreeLetterCountryCode = (code) => {
+    for (var i = 0, len = countryCodes.length; i < len; i++) {
+        if (code === countryCodes[i]['cca2']) {
+            return countryCodes[i]['cca3'];
+        }
+    }
+    return null;
 };
 
 let getJSON = (url) => {
@@ -29,6 +40,7 @@ let getJSON = (url) => {
 };
 
 export default {
+    getThreeLetterCountryCode,
     onReady,
     getJSON
 };
