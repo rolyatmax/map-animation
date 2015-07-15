@@ -85,7 +85,10 @@ class WordFade {
                     requestAnimationFrame(hideLetter);
                 } else {
                     setTimeout(() => {
-                        textEl.parentElement.removeChild(textEl);
+                        let parent = textEl.parentElement;
+                        if (parent) {
+                            textEl.parentElement.removeChild(textEl);
+                        }
                         resolve();
                     }, LETTER_ANIMATION);
                 }

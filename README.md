@@ -3,6 +3,7 @@ Word Viz Test
 
 ```
 npm install
+npm run generate-topo
 npm run watch-js
 ```
 
@@ -19,8 +20,8 @@ And point your browser to `localhost:8282`.
 ## TODO
 
  - [ ] add padding to country display
- - [ ] get more granular topojson for countries
- - [ ] show the full country name
+ - [X] get more granular topojson for countries
+ - [X] show the full country name
  - [X] figure out topoJSON projections
  - [X] Position origin over country
  - [X] Easing methods / Timing (for line drawing)

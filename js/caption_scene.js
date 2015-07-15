@@ -1,7 +1,11 @@
 let Caption = require('./caption');
 let Drawer = require('./drawer');
 let MapDrawer = require('./map_drawer');
+let Mapper = require('./mapper');
+let map = require('./world.json');
 let quotes = require('./quotes');
+
+let worldMap = new Mapper(map);
 
 const DISPLAY_TIME = 11000;
 const CAPTION_TIME = 1000;
@@ -10,14 +14,13 @@ const COLOR = '#444444';
 
 
 class CaptionScene {
-    constructor(container, worldMap) {
+    constructor(container) {
         this.container = container;
         this.timeout = 0;
 
         this.drawer = new Drawer(container);
         this.quoteSelection = quotes.slice();
         this.mapDrawer = new MapDrawer(new Drawer(container), worldMap, 9000);
-        this.worldMap = worldMap;
 
         window.mapDrawer = this.mapDrawer;
         window.drawer = this.drawer;
@@ -34,10 +37,10 @@ class CaptionScene {
             resolve = res || resolve;
             this.drawer.clear();
 
-            let countryCodes = Object.keys(this.worldMap.countries);
+            let countryCodes = Object.keys(worldMap.countries);
             let i = (Math.random() * countryCodes.length) | 0;
             let code = countryCodes.splice(i, 1)[0];
-            let {center} = this.worldMap.getCountryBoundingRect(code);
+            let {center} = worldMap.getCountryBoundingRect(code);
             // divide by two because canvas pixels are doubled
             center = this.mapDrawer.mapPointToCanvas(center).map(x => x / 2);
 

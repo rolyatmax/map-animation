@@ -5,7 +5,7 @@
   },
   // Rule docs: http://eslint.org/docs/rules/
   "rules": {
-    "block-scoped-var": [1],
+    "block-scoped-var": [0],
     "brace-style": [1, "1tbs", {"allowSingleLine": true}],
     "camelcase": [1],
     "comma-spacing": [1],

@@ -1,18 +1,22 @@
+let {getJSON} = require('./utils');
 let WordFade = require('./word_fade');
 let Drawer = require('./drawer');
 let MapDrawer = require('./map_drawer');
+let Mapper = require('./mapper');
+let countries = require('./country_codes_names.json');
 
 const DISPLAY_TIME = 5000;
 const COLOR = '#444444';
-const NUM_COUNTRIES_TO_SHOW = 1;
+const NUM_COUNTRIES_TO_SHOW = 5;
+
+let map;
 
 class CountryScene {
-    constructor(container, worldMap) {
+    constructor(container) {
         this.container = container;
         this.timeout = 0;
 
         this.mapDrawer = null;
-        this.worldMap = worldMap;
 
         window.mapper = this.mapDrawer;
         window.drawer = this.drawer;
@@ -26,37 +30,35 @@ class CountryScene {
         return new Promise(resolve => {
             resolve = res || resolve;
 
-            let countryCodes = Object.keys(this.worldMap.countries);
-            let i = (Math.random() * countryCodes.length) | 0;
-            let code = countryCodes.splice(i, 1)[0];
-            let arcs = this.worldMap.countries[code];
+            let i = Math.random() * countries.length | 0;
+            let name = countries[i].name;
+            let code = countries[i].code;
 
-            let map = {
-                arcs: arcs,
-                ranges: this.worldMap.getRange(arcs)
-            };
+            getJSON(`data/${code}-all.topo.json`).then(json => {
+                map = new Mapper(json);
 
-            this.drawer = new Drawer(this.container);
-            this.mapDrawer = new MapDrawer(this.drawer, map, 8000);
+                this.drawer = new Drawer(this.container);
+                this.mapDrawer = new MapDrawer(this.drawer, map, 8000);
 
-            this.fade = new WordFade(code, this.container);
-            this.fade.textEl.style.fontSize = '28px';
-            this.fade.textEl.style.zIndex = 10;
-            this.fade.textEl.style.left = '100px';
-            this.fade.textEl.style.top = '100px';
-            this.fade.showText(6000).then(() => {
-                setTimeout(this.fade.hideText.bind(this.fade, 4000), 4000);
-            });
-
-            count--;
-            let next = count ? this.showCountries.bind(this, count, resolve) : resolve;
-            requestAnimationFrame(() => {
-                this.mapDrawer.show(500, 4000, COLOR).then(() => {
-                    this.timeout = setTimeout(() => {
-                        this.mapDrawer.hide().then(next);
-                    }, DISPLAY_TIME);
+                this.fade = new WordFade(name, this.container);
+                this.fade.textEl.style.fontSize = '28px';
+                this.fade.textEl.style.zIndex = 10;
+                this.fade.textEl.style.left = '100px';
+                this.fade.textEl.style.top = '100px';
+                this.fade.showText(6000).then(() => {
+                    setTimeout(this.fade.hideText.bind(this.fade, 4000), 4000);
                 });
-            });
+
+                count--;
+                let next = count ? this.showCountries.bind(this, count, resolve) : resolve;
+                requestAnimationFrame(() => {
+                    this.mapDrawer.show(500, 4000, COLOR).then(() => {
+                        this.timeout = setTimeout(() => {
+                            this.mapDrawer.hide().then(next);
+                        }, DISPLAY_TIME);
+                    });
+                });
+            }, this.showCountries.bind(this, count, resolve));
         });
     }
 

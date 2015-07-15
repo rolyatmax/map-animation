@@ -2,7 +2,9 @@ class Mapper {
     constructor(map) {
         this.json = map;
         this.arcs = this.convertArcsToAbsolute(map.arcs, map.transform);
-        this.countries = this.buildCountryShapes(map);
+        if (map.objects.countries) {
+            this.countries = this.buildCountryShapes(map);
+        }
         this.ranges = this.getRange(this.arcs);
     }
 

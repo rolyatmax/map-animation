@@ -1,11 +1,6 @@
 let Mapper = require('./mapper');
-let map = require('./world.json');
 let CaptionScene = require('./caption_scene');
 let CountryScene = require('./country_scene');
-
-window.map = map;
-
-let worldMap = new Mapper(map);
 
 let container = document.querySelector('.container');
 let curScene;
@@ -22,7 +17,7 @@ let i = 0;
 
 function showScene() {
     let Scene = scenes[i % scenes.length];
-    curScene = new Scene(container, worldMap);
+    curScene = new Scene(container);
     curScene.start().then(() => {
         container.innerHTML = '';
         requestAnimationFrame(showScene);
