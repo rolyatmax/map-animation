@@ -59,18 +59,32 @@ function writeFile(body, url, filePath) {
     });
 }
 
+var toConvert = [];
+var converting = 0;
+
 function convertToTopo(filePath) {
+    if (converting > 4) {
+        toConvert.push(filePath);
+        return;
+    }
+
     var topoPath = filePath.replace('.geo.', '.topo.');
     var cmd = topojsonBinPath + ' ' + filePath + ' > ' + topoPath;
+    converting += 1;
     exec(cmd, function(error, stdout, stderr) {
         if (error) {
             console.error('topojson error:', error);
         }
         if (stdout) {
-            console.log('topojson result:', stdout);
+            console.log('topojson stdout:', stdout);
         }
         if (stderr) {
-            console.error('topojson error:', stderr);
+            console.log('topojson stderr:', stderr);
+        }
+
+        converting -= 1;
+        if (toConvert.length) {
+            convertToTopo(toConvert.shift());
         }
     });
 }
