@@ -9,6 +9,7 @@ var codes = require('../js/country_codes.json');
 
 var dataDir = path.join(process.cwd(), '..', 'data');
 var fileTemplate = path.join(dataDir, '%s-all.geo.json');
+var topojsonBinPath = path.join(process.cwd(), '..', 'node_modules/.bin/topojson');
 var baseUrl = 'http://code.highcharts.com/mapdata/countries/%s/%s-all.geo.json';
 
 var total = 0;
@@ -60,7 +61,7 @@ function writeFile(body, url, filePath) {
 
 function convertToTopo(filePath) {
     var topoPath = filePath.replace('.geo.', '.topo.');
-    var cmd = '../node_modules/.bin/topojson ' + filePath + ' > ' + topoPath;
+    var cmd = topojsonBinPath + ' ' + filePath + ' > ' + topoPath;
     exec(cmd, function(error, stdout, stderr) {
         if (error) {
             console.error('topojson error:', error);

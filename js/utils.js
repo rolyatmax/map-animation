@@ -12,7 +12,11 @@ let getJSON = (url) => {
         request.open('GET', url, true);
         request.onload = function() {
             if (this.status >= 200 && this.status < 400) {
-                resolve(JSON.parse(this.response));
+                try {
+                    resolve(JSON.parse(this.response));
+                } catch (err) {
+                    reject(this.response);
+                }
             } else {
                 reject(this.response);
             }
