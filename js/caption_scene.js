@@ -42,6 +42,9 @@ class CaptionScene {
             let i = Math.random() * this.data.length | 0;
             let region = this.data.splice(i, 1)[0];
             let code = getThreeLetterCountryCode(region.code);
+
+            // TODO: make sure this code is in worldMap
+
             let {center} = worldMap.getCountryBoundingRect(code);
             // divide by two because canvas pixels are doubled
             center = this.mapDrawer.mapPointToCanvas(center).map(x => x / 2);

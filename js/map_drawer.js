@@ -10,14 +10,18 @@ class MapDrawer {
         drawer.canvas.style.opacity = 0.3;
         drawer.canvas.style.webkitTransform = 'rotate3d(9,9,0,75deg) scale(4, 4)';
         drawer.canvas.style.webkitTransition = `all ${fadeSpeed}ms ease`;
+        this.fadeSpeed = fadeSpeed;
         this.drawer = drawer;
         this.map = map;
     }
 
     animateIn() {
-        requestAnimationFrame(() => {
-            this.drawer.canvas.style.opacity = 0.5;
-            this.drawer.canvas.style.webkitTransform = 'rotate3d(0,0,0,0) scale(1, 1)';
+        return new Promise(resolve => {
+            requestAnimationFrame(() => {
+                this.drawer.canvas.style.opacity = 0.5;
+                this.drawer.canvas.style.webkitTransform = 'rotate3d(0,0,0,0) scale(1, 1)';
+            });
+            setTimeout(resolve, this.fadeSpeed);
         });
     }
 
