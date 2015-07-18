@@ -33,7 +33,7 @@ let getJSON = (url) => {
             }
         };
         request.onerror = function() {
-            reject(this.response); // ?
+            reject(this.response);
         };
         request.send();
     });
