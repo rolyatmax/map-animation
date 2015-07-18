@@ -4,7 +4,7 @@ Word Viz Test
 ```
 npm install
 npm run generate-topo
-npm run watch-js
+npm run watch
 ```
 
 Then:

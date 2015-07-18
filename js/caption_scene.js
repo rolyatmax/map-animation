@@ -4,7 +4,6 @@ let Drawer = require('./drawer');
 let MapDrawer = require('./map_drawer');
 let Mapper = require('./mapper');
 let map = require('./world.json');
-let quotes = require('./quotes');
 
 let worldMap = new Mapper(map);
 
@@ -16,12 +15,11 @@ const COLOR = '#444444';
 
 class CaptionScene {
     constructor(container, data) {
-        this.data = data.slice();
+        this.data = data.slice().filter(region => !!region.buzzes.length);
         this.container = container;
         this.timeout = 0;
 
         this.drawer = new Drawer(container);
-        this.quoteSelection = quotes.slice();
         this.mapDrawer = new MapDrawer(new Drawer(container), worldMap, 9000);
 
         window.mapDrawer = this.mapDrawer;

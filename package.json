@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "watch-js": "mkdir -p build && node_modules/.bin/watchify --full-paths js/main.js -o build/build.js -v",
+    "watch": "mkdir -p build && node_modules/.bin/watchify js/main.js -o 'node_modules/.bin/exorcist build/build.js.map > build/build.js' -d -v",
     "generate-topo": "cd scripts && node fetch_geojson.js && cd -",
     "clear-data": "rm -r ./data",
     "build": "mkdir -p build && node_modules/.bin/browserify js/main.js -o build/build.js",
@@ -18,6 +18,7 @@
     "babelify": "6.1.2",
     "browserify": "10.2.6",
     "eslint": "0.24.1",
+    "exorcist": "0.4.0",
     "topojson": "1.6.19",
     "watchify": "3.2.3"
   },
@@ -29,6 +30,6 @@
     ]
   },
   "dependencies": {
-    "promise-polyfill": "^2.1.0"
+    "promise-polyfill": "2.1.0"
   }
 }
