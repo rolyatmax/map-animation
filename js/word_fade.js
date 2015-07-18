@@ -1,8 +1,6 @@
-const LETTER_ANIMATION = 2000;
+let {easeOut, startAnimation} = require('./utils');
 
-function ease(step, change, start) {
-    return change * Math.pow(step, 2) + start;
-}
+const LETTER_ANIMATION = 2000;
 
 class WordFade {
     constructor(text, container) {
@@ -18,7 +16,7 @@ class WordFade {
             word.split('').forEach(letter => {
                 let letterEl = document.createElement('span');
                 letterEl.style.opacity = 0;
-                letterEl.style.webkitTransform = `rotate3d(104, 69, 32, 93deg)`;
+                letterEl.style.webkitTransform = 'rotate3d(104, 69, 32, 93deg)';
                 letterEl.style.webkitTransition = `all ${LETTER_ANIMATION}ms ease`;
                 letterEl.innerText = letter;
                 this.letterEls.push(letterEl);
@@ -33,67 +31,40 @@ class WordFade {
     }
 
     showText(duration) {
-        duration -= LETTER_ANIMATION;
-        let letters = this.letterEls.slice();
-        let totalLetters = letters.length;
-        let startTime;
-        return new Promise((resolve) => {
-            function revealLetter(t) {
-                startTime = startTime || t;
-                let step = Math.min(1, (t - startTime) / duration);
-                let lettersShouldBeLeft = totalLetters - (ease(step, totalLetters, 0) | 0);
-                let lettersToAnimate = letters.length - lettersShouldBeLeft;
-                if (lettersToAnimate) {
-                    while (lettersToAnimate--) {
-                        let i = (Math.random() * letters.length) | 0;
-                        let el = letters.splice(i, 1)[0];
-                        el.style.opacity = 1;
-                        el.style.webkitTransform = 'rotate3d(0,0,0,0)';
-                    }
-                }
-                if (letters.length) {
-                    requestAnimationFrame(revealLetter);
-                } else {
-                    setTimeout(resolve, LETTER_ANIMATION);
-                }
-            }
-            requestAnimationFrame(revealLetter);
-        });
+        return this.animateText({
+            'webkitTransform': 'rotate3d(0,0,0,0)',
+            'opacity': 1
+        }, duration);
     }
 
     hideText(duration) {
+        return this.animateText({
+            'webkitTransform': 'rotate3d(104, 69, 32, 93deg)',
+            'opacity': 0
+        }, duration);
+    }
+
+    animateText(props, duration) {
         duration -= LETTER_ANIMATION;
-        let {letterEls, textEl} = this;
-        let letters = letterEls.slice();
+        let letters = this.letterEls.slice();
         let totalLetters = letters.length;
-        let startTime;
-        return new Promise((resolve) => {
-            function hideLetter(t) {
-                startTime = startTime || t;
-                let step = Math.min(1, (t - startTime) / duration);
-                let lettersShouldBeLeft = totalLetters - (ease(step, totalLetters, 0) | 0);
-                let lettersToAnimate = letters.length - lettersShouldBeLeft;
-                if (lettersToAnimate) {
-                    while (lettersToAnimate--) {
-                        let i = (Math.random() * letters.length) | 0;
-                        let el = letters.splice(i, 1)[0];
-                        el.style.webkitTransform = `rotate3d(104, 69, 32, 93deg)`;
-                        el.style.opacity = 0;
+        return startAnimation(step => {
+            step = Math.min(1, step);
+            let lettersShouldBeLeft = totalLetters - (easeOut(step, 0, totalLetters) | 0);
+            let lettersToAnimate = letters.length - lettersShouldBeLeft;
+            if (lettersToAnimate) {
+                while (lettersToAnimate--) {
+                    let i = (Math.random() * letters.length) | 0;
+                    let el = letters.splice(i, 1)[0];
+                    for (let prop in props) {
+                        if (prop in el.style) {
+                            el.style[prop] = props[prop];
+                        }
                     }
                 }
-                if (letters.length) {
-                    requestAnimationFrame(hideLetter);
-                } else {
-                    setTimeout(() => {
-                        let parent = textEl.parentElement;
-                        if (parent) {
-                            textEl.parentElement.removeChild(textEl);
-                        }
-                        resolve();
-                    }, LETTER_ANIMATION);
-                }
             }
-            requestAnimationFrame(hideLetter);
+        }, duration).then(() => {
+            return new Promise(resolve => setTimeout(resolve, LETTER_ANIMATION));
         });
     }
 

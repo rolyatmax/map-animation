@@ -1,11 +1,8 @@
-function ease(step, change, start) {
-    return change * Math.pow(step, 2) + start;
-}
-
+let {startAnimation, easeOut} = require('./utils');
 
 class MapDrawer {
     // expects `map` to be on object with ranges, arcs, (and optionally) a
-    // countries key
+    // countries key ??
     constructor(drawer, map, fadeSpeed) {
         drawer.canvas.style.opacity = 0.3;
         drawer.canvas.style.webkitTransform = 'rotate3d(9,9,0,75deg) scale(4, 4)';
@@ -38,59 +35,41 @@ class MapDrawer {
     draw(duration, drawSpeed, color, width = 1) {
         let arcs = this.map.arcs.slice();
         let totalArcs = arcs.length;
-        let startTime;
-        let {drawer} = this;
-        let transform = this.mapPointToCanvas.bind(this);
-        return new Promise(resolve => {
-            function drawSection(t) {
-                startTime = startTime || t;
-                let step = Math.min(1, (t - startTime) / duration);
-                let arcsShouldBeLeft = totalArcs - (ease(step, totalArcs, 0) | 0);
-                let arcsToDraw = arcs.length - arcsShouldBeLeft;
-                if (arcsToDraw) {
-                    while (arcsToDraw--) {
-                        let i = (Math.random() * arcs.length) | 0;
-                        let arc = arcs.splice(i, 1)[0];
-                        drawer.arc(arc, drawSpeed, transform, color, width);
-                    }
-                }
-                if (arcs.length) {
-                    requestAnimationFrame(drawSection.bind(this));
-                } else {
-                    setTimeout(resolve, drawSpeed);
+        return startAnimation(step => {
+            step = Math.min(1, step);
+            let arcsShouldBeLeft = totalArcs - (easeOut(step, 0, totalArcs) | 0);
+            let arcsToDraw = arcs.length - arcsShouldBeLeft;
+            if (arcsToDraw) {
+                while (arcsToDraw--) {
+                    let i = (Math.random() * arcs.length) | 0;
+                    let arc = arcs.splice(i, 1)[0];
+                    this.drawer.arc(arc.map(this.mapPointToCanvas.bind(this)), drawSpeed, color, width);
                 }
             }
-            requestAnimationFrame(drawSection.bind(this));
+        }, duration).then(() => {
+            return new Promise(resolve => setTimeout(resolve, drawSpeed));
         });
     }
 
     // same as draw but draws individual countries
     drawCountries(duration, drawSpeed, color, width = 1) {
-        let {drawer, map} = this;
-        let countryCodes = Object.keys(map.countries);
+        let countryCodes = Object.keys(this.map.countries);
         let totalCountries = countryCodes.length;
-        let startTime;
-        let transform = this.mapPointToCanvas.bind(this);
-        return new Promise(resolve => {
-            function drawSection(t) {
-                startTime = startTime || t;
-                let step = Math.min(1, (t - startTime) / duration);
-                let countriesShouldBeLeft = totalCountries - (ease(step, totalCountries, 0) | 0);
-                let countriesToDraw = countryCodes.length - countriesShouldBeLeft;
-                if (countriesToDraw) {
-                    while (countriesToDraw--) {
-                        let i = (Math.random() * countryCodes.length) | 0;
-                        let code = countryCodes.splice(i, 1)[0];
-                        map.countries[code].forEach(arc => drawer.arc(arc, drawSpeed, transform, color, width));
-                    }
-                }
-                if (countryCodes.length) {
-                    requestAnimationFrame(drawSection.bind(this));
-                } else {
-                    setTimeout(resolve, drawSpeed);
+        return startAnimation(step => {
+            step = Math.min(1, step);
+            let countriesShouldBeLeft = totalCountries - (easeOut(step, 0, totalCountries) | 0);
+            let countriesToDraw = countryCodes.length - countriesShouldBeLeft;
+            if (countriesToDraw) {
+                while (countriesToDraw--) {
+                    let i = (Math.random() * countryCodes.length) | 0;
+                    let code = countryCodes.splice(i, 1)[0];
+                    this.map.countries[code].forEach(arc => {
+                        this.drawer.arc(arc.map(this.mapPointToCanvas.bind(this)), drawSpeed, color, width);
+                    });
                 }
             }
-            requestAnimationFrame(drawSection.bind(this));
+        }, duration).then(() => {
+            return new Promise(resolve => setTimeout(resolve, drawSpeed));
         });
     }
 

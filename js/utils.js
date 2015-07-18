@@ -39,8 +39,36 @@ let getJSON = (url) => {
     });
 };
 
+let startAnimation = (renderFn, duration) => {
+    let startTime;
+    return new Promise((resolve) => {
+        function _render(t) {
+            startTime = startTime || t;
+            let step = (t - startTime) / duration;
+            renderFn(step);
+            if (step < 1) {
+                requestAnimationFrame(_render);
+            } else {
+                resolve();
+            }
+        }
+        requestAnimationFrame(_render);
+    });
+};
+
+let easeOut = (step, start, change) => {
+    return change * Math.pow(step, 2) + start;
+};
+
+let easeIn = (step, start, change) => {
+    return change * (1 - Math.pow(1 - step, 3)) + start;
+};
+
 export default {
     getThreeLetterCountryCode,
     onReady,
-    getJSON
+    getJSON,
+    startAnimation,
+    easeOut,
+    easeIn
 };

@@ -69,16 +69,16 @@ class Caption {
     show() {
         let {drawer, fade, origin, lineStart, lineEnd, radius, halfLine, textBg, color} = this;
         return new Promise((resolve) => {
-            drawer.circle(origin, radius, this.startAngle, color, 400, 2).then(() => {
-                return drawer.line(lineStart, [lineStart[0], lineEnd[1]], color, 400);
+            drawer.circle(origin, radius, this.startAngle, 400, color, 2).then(() => {
+                return drawer.line(lineStart, [lineStart[0], lineEnd[1]], 400, color);
             }).then(() => {
                 fade.showText(4000).then(resolve);
                 textBg.style.opacity = 0.85;
                 textBg.style.webkitTransform = 'scale(1,1)';
-                return drawer.line([lineStart[0], lineEnd[1]], lineEnd, color, 400);
+                return drawer.line([lineStart[0], lineEnd[1]], lineEnd, 400, color);
             }).then(() => {
-                drawer.line(lineEnd, [lineEnd[0], lineEnd[1] - halfLine], color, 400);
-                drawer.line(lineEnd, [lineEnd[0], lineEnd[1] + halfLine], color, 400);
+                drawer.line(lineEnd, [lineEnd[0], lineEnd[1] - halfLine], 400, color);
+                drawer.line(lineEnd, [lineEnd[0], lineEnd[1] + halfLine], 400, color);
             });
         });
     }
@@ -87,15 +87,21 @@ class Caption {
         let {drawer, fade, origin, lineStart, lineEnd, radius, halfLine, textBg} = this;
         let color = '#ffffff';
         return new Promise((resolve) => {
-            fade.hideText(4500).then(resolve);
+            fade.hideText(4500).then(() => {
+                let parent = fade.textEl.parentElement;
+                if (parent) {
+                    fade.textEl.parentElement.removeChild(fade.textEl);
+                }
+                resolve();
+            });
             textBg.style.opacity = 0;
             textBg.style.webkitTransform = 'scale(0.6,0.6)';
             setTimeout(() => {
-                drawer.circle(origin, radius, this.startAngle, color, 1200, 4);
-                drawer.line(lineStart, [lineStart[0], lineEnd[1]], color, 1200);
-                drawer.line([lineStart[0], lineEnd[1]], lineEnd, color, 1200);
-                drawer.line(lineEnd, [lineEnd[0], lineEnd[1] - halfLine], color, 1200);
-                drawer.line(lineEnd, [lineEnd[0], lineEnd[1] + halfLine], color, 1200);
+                drawer.circle(origin, radius, this.startAngle, 1200, color, 4);
+                drawer.line(lineStart, [lineStart[0], lineEnd[1]], 1200, color);
+                drawer.line([lineStart[0], lineEnd[1]], lineEnd, 1200, color);
+                drawer.line(lineEnd, [lineEnd[0], lineEnd[1] - halfLine], 1200, color);
+                drawer.line(lineEnd, [lineEnd[0], lineEnd[1] + halfLine], 1200, color);
             }, 1900);
         });
     }
