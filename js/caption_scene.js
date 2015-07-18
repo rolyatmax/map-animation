@@ -1,9 +1,9 @@
-let {getThreeLetterCountryCode} = require('./utils');
 let Caption = require('./caption');
-let Drawer = require('./drawer');
+let Drawer = require('drawer');
 let MapDrawer = require('./map_drawer');
 let Mapper = require('./mapper');
 let map = require('./world.json');
+let countryCodes = require('./country_codes.json');
 
 let worldMap = new Mapper(map);
 
@@ -12,6 +12,15 @@ const CAPTION_TIME = 1000;
 const NUM_QUOTES_TO_SHOW = 3;
 const COLOR = '#444444';
 
+
+function getThreeLetterCountryCode(code) {
+    for (let i = 0, len = countryCodes.length; i < len; i++) {
+        if (code === countryCodes[i]['cca2']) {
+            return countryCodes[i]['cca3'];
+        }
+    }
+    return null;
+}
 
 class CaptionScene {
     constructor(container, data) {

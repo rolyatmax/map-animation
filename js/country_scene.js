@@ -1,6 +1,6 @@
-let {getJSON} = require('./utils');
+let {getJSON} = require('utils');
 let WordFade = require('./word_fade');
-let Drawer = require('./drawer');
+let Drawer = require('drawer');
 let MapDrawer = require('./map_drawer');
 let Mapper = require('./mapper');
 

@@ -1,4 +1,4 @@
-let {startAnimation, easeOut} = require('./utils');
+let {startAnimation, easeOut} = require('utils');
 
 class MapDrawer {
     // expects `map` to be on object with ranges, arcs, (and optionally) a

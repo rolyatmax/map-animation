@@ -1,4 +1,4 @@
-let {easeOut, startAnimation} = require('./utils');
+let {easeOut, startAnimation} = require('utils');
 
 const LETTER_ANIMATION = 2000;
 

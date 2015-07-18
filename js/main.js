@@ -1,4 +1,4 @@
-let {getJSON} = require('./utils');
+let {getJSON} = require('utils');
 let CaptionScene = require('./caption_scene');
 let CountryScene = require('./country_scene');
 

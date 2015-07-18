@@ -11,7 +11,7 @@
     "build": "mkdir -p build && node_modules/.bin/browserify js/main.js -o build/build.js",
     "serve": "python -m SimpleHTTPServer 8282"
   },
-  "author": "Taylor Baldwin",
+  "author": "Taylor Baldwin <taylorbaldwin@gmail.com> (https://tbaldw.in)",
   "license": "ISC",
   "devDependencies": {
     "babel-eslint": "3.1.23",
@@ -30,6 +30,8 @@
     ]
   },
   "dependencies": {
-    "promise-polyfill": "2.1.0"
+    "promise-polyfill": "2.1.0",
+    "utils": "git+ssh://git@github.com:rolyatmax/utils.git",
+    "drawer": "git+ssh://git@github.com:rolyatmax/drawer.git"
   }
 }
