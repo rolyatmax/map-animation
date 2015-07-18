@@ -1,5 +1,9 @@
-Word Viz Test
+Map Animation
 =============
+
+A little visualization showing BuzzFeed articles that have been read in different
+countries around the world using a little animation library I wrote:
+https://github.com/rolyatmax/drawer
 
 ```
 npm install

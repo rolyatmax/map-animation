@@ -1,8 +1,16 @@
 {
-  "name": "word-viz-test",
+  "name": "map-animation",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/rolyatmax/map-animation.git"
+  },
+  "bugs": {
+    "url": "https://github.com/rolyatmax/map-animation/issues"
+  },
+  "homepage": "https://github.com/rolyatmax/map-animation#readme",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "watch": "mkdir -p build && node_modules/.bin/watchify js/main.js -o 'node_modules/.bin/exorcist build/build.js.map > build/build.js' -d -v",
