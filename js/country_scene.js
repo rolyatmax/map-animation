@@ -33,7 +33,7 @@ class CountryScene {
             let i = Math.random() * this.data.length | 0;
             let {name, code} = this.data.splice(i, 1)[0];
 
-            getJSON(`data/${code}-all.topo.json`).then(json => {
+            getJSON(`data/${code.toLowerCase()}-all.topo.json`).then(json => {
                 map = new Mapper(json);
 
                 this.drawer = new Drawer(this.container);
