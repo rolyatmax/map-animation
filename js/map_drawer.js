@@ -63,14 +63,16 @@ class MapDrawer {
                 while (countriesToDraw--) {
                     let i = (Math.random() * countryCodes.length) | 0;
                     let code = countryCodes.splice(i, 1)[0];
-                    this.map.countries[code].forEach(arc => {
-                        this.drawer.arc(arc.map(this.mapPointToCanvas.bind(this)), drawSpeed, color, width);
-                    });
+                    this.map.countries[code].forEach(this.drawArc.bind(this, drawSpeed, color, width));
                 }
             }
         }, duration).then(() => {
             return new Promise(resolve => setTimeout(resolve, drawSpeed));
         });
+    }
+
+    drawArc(drawSpeed, color, width, arc) {
+        this.drawer.arc(arc.map(this.mapPointToCanvas.bind(this)), drawSpeed, color, width);
     }
 
     // draws arcs in topojson format
