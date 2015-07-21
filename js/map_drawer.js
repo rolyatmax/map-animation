@@ -75,28 +75,6 @@ class MapDrawer {
         this.drawer.arc(arc.map(this.mapPointToCanvas.bind(this)), drawSpeed, color, width);
     }
 
-    // draws arcs in topojson format
-    drawRelativeArc(arc) {
-        let {ctx} = this.drawer;
-        ctx.beginPath();
-        ctx.strokeStyle = '#444444';
-        ctx.lineWidth = 1;
-        let last;
-        arc.forEach(pt => {
-            let [x, y] = pt;
-            if (!last) {
-                ctx.moveTo(...this.mapPointToCanvas([x, y]));
-            } else {
-                x += last[0];
-                y += last[1];
-                ctx.lineTo(...this.mapPointToCanvas([x, y]));
-            }
-            last = [x, y];
-        });
-        ctx.stroke();
-        last = null;
-    }
-
     mapPointToCanvas(pt) {
         let {height, width} = this.drawer.canvas;
         let {x: [minX, maxX], y: [minY, maxY]} = this.map.ranges;
