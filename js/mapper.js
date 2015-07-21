@@ -1,6 +1,5 @@
 class Mapper {
     constructor(map) {
-        this.json = map;
         this.arcs = this.convertArcsToAbsolute(map.arcs, map.transform);
         if (map.objects.countries) {
             this.countries = this.buildCountryShapes(map);
