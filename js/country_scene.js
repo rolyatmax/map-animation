@@ -1,4 +1,5 @@
 let {getJSON} = require('utils');
+let {wait, rAF} = require('./helpers');
 let WordFade = require('./word_fade');
 let Drawer = require('drawer');
 let MapDrawer = require('./map_drawer');
@@ -9,13 +10,6 @@ const COLOR = '#444444';
 const NUM_COUNTRIES_TO_SHOW = 2;
 
 let map;
-
-function wait(ms) {
-    return new Promise(resolve => setTimeout(resolve, ms));
-}
-function rAF() {
-    return new Promise(resolve => requestAnimationFrame(resolve));
-}
 
 class CountryScene {
     constructor(container, data) {
@@ -60,7 +54,7 @@ class CountryScene {
                     .then(() => this.mapDrawer.show(500, 4000, COLOR))
                     .then(() => wait(DISPLAY_TIME))
                     .then(() => this.mapDrawer.hide())
-                    .then(() => count ? this.showCountries(count, resolve) : resolve);
+                    .then(() => count ? this.showCountries(count, resolve) : resolve());
             }, this.showCountries.bind(this, count, resolve));
         });
     }

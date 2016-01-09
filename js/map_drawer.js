@@ -1,4 +1,6 @@
 let {startAnimation, easeOut} = require('utils');
+let {wait, rAF} = require('./helpers');
+
 
 class MapDrawer {
     // expects `map` to be on object with ranges, arcs, (and optionally) a
@@ -13,13 +15,12 @@ class MapDrawer {
     }
 
     animateIn() {
-        return new Promise(resolve => {
-            requestAnimationFrame(() => {
+        return rAF()
+            .then(() => {
                 this.drawer.canvas.style.opacity = 0.5;
                 this.drawer.canvas.style.webkitTransform = 'rotate3d(0,0,0,0) scale(1, 1)';
-            });
-            setTimeout(resolve, this.fadeSpeed);
-        });
+            })
+            .then(() => wait(this.fadeSpeed));
     }
 
     show(duration, drawSpeed, color) {
@@ -43,12 +44,15 @@ class MapDrawer {
                 while (arcsToDraw--) {
                     let i = (Math.random() * arcs.length) | 0;
                     let arc = arcs.splice(i, 1)[0];
-                    this.drawer.arc(arc.map(this.mapPointToCanvas.bind(this)), drawSpeed, color, width);
+                    this.drawer.arc(
+                        arc.map(this.mapPointToCanvas.bind(this)),
+                        drawSpeed,
+                        color,
+                        width
+                    );
                 }
             }
-        }, duration).then(() => {
-            return new Promise(resolve => setTimeout(resolve, drawSpeed));
-        });
+        }, duration).then(() => wait(drawSpeed));
     }
 
     // same as draw but draws individual countries
@@ -63,16 +67,21 @@ class MapDrawer {
                 while (countriesToDraw--) {
                     let i = (Math.random() * countryCodes.length) | 0;
                     let code = countryCodes.splice(i, 1)[0];
-                    this.map.countries[code].forEach(this.drawArc.bind(this, drawSpeed, color, width));
+                    this.map.countries[code].forEach(
+                        (arc) => this.drawArc(drawSpeed, color, width, arc)
+                    );
                 }
             }
-        }, duration).then(() => {
-            return new Promise(resolve => setTimeout(resolve, drawSpeed));
-        });
+        }, duration).then(() => wait(drawSpeed));
     }
 
     drawArc(drawSpeed, color, width, arc) {
-        this.drawer.arc(arc.map(this.mapPointToCanvas.bind(this)), drawSpeed, color, width);
+        this.drawer.arc(
+            arc.map(this.mapPointToCanvas.bind(this)),
+            drawSpeed,
+            color,
+            width
+        );
     }
 
     mapPointToCanvas(pt) {
@@ -94,8 +103,10 @@ class MapDrawer {
     }
 
     hide() {
-        requestAnimationFrame(() => this.drawer.canvas.style.opacity = 0);
-        return this.draw(2000, 1500, '#ffffff', 3).then(this.clear.bind(this));
+        return rAF()
+            .then(() => this.drawer.canvas.style.opacity = 0)
+            .then(() => this.draw(2000, 1500, '#ffffff', 3))
+            .then(() => this.clear());
     }
 
     clear() {

@@ -1,4 +1,5 @@
 let {getJSON} = require('utils');
+let {rAF} = require('./helpers');
 let CaptionScene = require('./caption_scene');
 let CountryScene = require('./country_scene');
 
@@ -20,10 +21,10 @@ function main() {
         function showScene() {
             let Scene = scenes[i % scenes.length];
             curScene = new Scene(container, data.result);
-            curScene.start().then(() => {
-                container.innerHTML = '';
-                requestAnimationFrame(showScene);
-            });
+            curScene.start()
+                .then(() => container.innerHTML = '')
+                .then(rAF)
+                .then(showScene);
             i++;
         }
         requestAnimationFrame(showScene);
