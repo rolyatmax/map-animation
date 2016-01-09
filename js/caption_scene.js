@@ -37,8 +37,8 @@ class CaptionScene {
 
     start() {
         return this.mapDrawer.showCountries(9000, 3000, COLOR)
-            .then(this.showCaptions.bind(this, NUM_QUOTES_TO_SHOW))
-            .then(this.teardown.bind(this));
+            .then(() => this.showCaptions(NUM_QUOTES_TO_SHOW))
+            .then(() => this.teardown());
     }
 
     showCaptions(count, res) {

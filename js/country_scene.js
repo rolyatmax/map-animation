@@ -10,8 +10,11 @@ const NUM_COUNTRIES_TO_SHOW = 2;
 
 let map;
 
-function pause(ms) {
+function wait(ms) {
     return new Promise(resolve => setTimeout(resolve, ms));
+}
+function rAF() {
+    return new Promise(resolve => requestAnimationFrame(resolve));
 }
 
 class CountryScene {
@@ -48,19 +51,16 @@ class CountryScene {
                 this.fade.textEl.style.zIndex = 10;
                 this.fade.textEl.style.left = '100px';
                 this.fade.textEl.style.top = '100px';
-                this.fade.showText(6000).then(() => {
-                    setTimeout(this.fade.hideText.bind(this.fade, 4000), 4000);
-                });
+                this.fade.showText(6000)
+                    .then(() => wait(4000))
+                    .then(() => this.fade.hideText(4000));
 
                 count--;
-                let next = count ? this.showCountries.bind(this, count, resolve) : resolve;
-                requestAnimationFrame(() => {
-                    this.mapDrawer.show(500, 4000, COLOR).then(() => {
-                        this.timeout = setTimeout(() => {
-                            this.mapDrawer.hide().then(next);
-                        }, DISPLAY_TIME);
-                    });
-                });
+                rAF()
+                    .then(() => this.mapDrawer.show(500, 4000, COLOR))
+                    .then(() => wait(DISPLAY_TIME))
+                    .then(() => this.mapDrawer.hide())
+                    .then(() => count ? this.showCountries(count, resolve) : resolve);
             }, this.showCountries.bind(this, count, resolve));
         });
     }
