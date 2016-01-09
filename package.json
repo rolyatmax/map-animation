@@ -2,7 +2,7 @@
   "name": "map-animation",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "js/main.js",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/rolyatmax/map-animation.git"
@@ -12,12 +12,11 @@
   },
   "homepage": "https://github.com/rolyatmax/map-animation#readme",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "watch": "mkdir -p build && node_modules/.bin/watchify js/main.js -o 'node_modules/.bin/exorcist build/build.js.map > build/build.js' -d -v",
     "generate-topo": "cd scripts && node fetch_geojson.js && cd -",
     "clear-data": "rm -r ./data",
-    "build": "mkdir -p build && node_modules/.bin/browserify js/main.js -o build/build.js",
-    "serve": "python -m SimpleHTTPServer 8282"
+    "watch": "mkdir -p build && watchify . -o build/build.js -dv",
+    "build": "mkdir -p build && browserify . -o build/build.js",
+    "serve": "open http://localhost:8282 && python -m SimpleHTTPServer 8282"
   },
   "author": "Taylor Baldwin <taylorbaldwin@gmail.com> (https://tbaldw.in)",
   "license": "ISC",
@@ -26,7 +25,6 @@
     "babelify": "6.1.2",
     "browserify": "10.2.6",
     "eslint": "0.24.1",
-    "exorcist": "0.4.0",
     "topojson": "1.6.19",
     "watchify": "3.2.3"
   },
@@ -39,7 +37,7 @@
   },
   "dependencies": {
     "promise-polyfill": "2.1.0",
-    "utils": "git+ssh://git@github.com:rolyatmax/utils.git",
-    "drawer": "git+ssh://git@github.com:rolyatmax/drawer.git"
+    "utils": "git+ssh://git@github.com:rolyatmax/utils.git#65bf810",
+    "drawer": "git+ssh://git@github.com:rolyatmax/drawer.git#720727c"
   }
 }
