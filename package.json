@@ -38,6 +38,6 @@
   "dependencies": {
     "promise-polyfill": "2.1.0",
     "utils": "git+ssh://git@github.com:rolyatmax/utils.git#65bf810",
-    "drawer": "git+ssh://git@github.com:rolyatmax/drawer.git#720727c"
+    "drawer": "git+ssh://git@github.com:rolyatmax/drawer.git#73bc6b1"
   }
 }

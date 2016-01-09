@@ -10,6 +10,10 @@ const NUM_COUNTRIES_TO_SHOW = 2;
 
 let map;
 
+function pause(ms) {
+    return new Promise(resolve => setTimeout(resolve, ms));
+}
+
 class CountryScene {
     constructor(container, data) {
         this.data = data.slice();
