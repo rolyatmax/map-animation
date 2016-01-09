@@ -16,19 +16,16 @@ document.addEventListener('keydown', (e) => {
 let scenes = [CaptionScene, CountryScene];
 let i = 0;
 
-function main() {
-    getJSON('data/geofresh.json').then(data => {
-        function showScene() {
-            let Scene = scenes[i % scenes.length];
-            curScene = new Scene(container, data.result);
-            curScene.start()
-                .then(() => container.innerHTML = '')
-                .then(rAF)
-                .then(showScene);
-            i++;
-        }
-        requestAnimationFrame(showScene);
-    });
+function showScene(data) {
+    let Scene = scenes[i % scenes.length];
+    curScene = new Scene(container, data);
+    curScene.start()
+        .then(() => container.innerHTML = '')
+        .then(rAF)
+        .then(() => showScene(data));
+    i++;
 }
 
-main();
+getJSON('data/geofresh.json')
+    .then(data => data.result)
+    .then(showScene);
